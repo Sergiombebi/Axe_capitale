@@ -1,1 +1,5 @@
-<h2>debut du projet</h2>
+@extends('layouts.home')
+@section('content')
+    
+
+@endsection
