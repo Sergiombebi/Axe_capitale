@@ -42,6 +42,7 @@ class RegisterController extends Controller
             $verification_code = strtoupper(Str::random(6));
 
             // ✅ Enregistrement en BDD
+            // dd($verification_code);
             $user = User::create([
                 'name' => $validatedData['name'],
                 'phone' => $validatedData['phone'], // ✅ correction ici

@@ -205,7 +205,7 @@
                     <h2 class="text-lg md:text-xl font-semibold text-gray-800">
                         Bienvenue, {{ Auth::user()->name ?? 'Visiteur' }}
                     </h2>
-                    <p class="text-sm text-gray-500 hidden md:block">Gérez vos finances en toute simplicité</p>
+                    <p class="text-sm text-gray-500 hidden md:block">Les petites tontine pour les grande Ambitions</p>
                 </div>
                 
                 {{-- Actions utilisateur --}}
