@@ -23,3 +23,10 @@ Route::get('verify-mail', [VerificationCodeMail::class, 'ShowVerificationcodeFor
 
 Route::get('/verify-show', [VerificationCodeView::class, 'ShowVerificationForm'])->name('verify.show');
 Route::post('/verify-show2', [VerificationCodeView::class, 'verify'])->name('verify.show2');
+
+//route pour la connexion
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+//deconnexio
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+});
