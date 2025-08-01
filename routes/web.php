@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Mail\VerificationCodeMail;
 use App\Http\Controllers\Auth\VerificationCodeView;
+use App\Http\Controllers\Account\AccountController;
 
 // ✅ Ajouter un nom à la route
 Route::get('/', function () {
@@ -30,3 +31,5 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
+//route pour la page de creation de compte
+Route::get('/create-account', [AccountController::class, 'index'])->name('create.account');
