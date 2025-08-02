@@ -23,7 +23,7 @@ class User extends Authenticatable
         'phone',
         'verification_code',
         'password',
-        'role', 
+        'role',
     ];
 
     /**
@@ -41,6 +41,11 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    public function compte()
+    {
+        return $this->hasOne(Compte::class);
+    }
+
     protected function casts(): array
     {
         return [

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Mail\VerificationCodeMail;
 use App\Http\Controllers\Auth\VerificationCodeView;
 use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Compte\CompteController;
 
 // ✅ Ajouter un nom à la route
 Route::get('/', function () {
@@ -33,3 +34,6 @@ Route::middleware('auth')->group(function () {
 });
 //route pour la page de creation de compte
 Route::get('/create-account', [AccountController::class, 'index'])->name('create.account');
+
+Route::post('/compte/store', [CompteController::class, 'store'])->middleware('auth')->name('compte.store');
+Route::put('/compte/{id}', [CompteController::class, 'update'])->name('compte.update');
