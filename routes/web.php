@@ -37,3 +37,24 @@ Route::get('/create-account', [AccountController::class, 'index'])->name('create
 
 Route::post('/compte/store', [CompteController::class, 'store'])->middleware('auth')->name('compte.store');
 Route::put('/compte/{id}', [CompteController::class, 'update'])->name('compte.update');
+// route pour le tableau de bord
+Route::middleware(['auth'])->group(function () {
+    
+    // Dashboard principal
+    Route::get('/dashboard', [CompteController::class, 'dashboard'])->name('dashboard');
+    
+    // Routes spécifiques au gestionnaire de comptes
+    Route::prefix('gestionnaire')->name('gestionnaire.')->group(function () {
+        
+        // Activation/Désactivation des comptes
+        Route::post('/comptes/{id}/activer', [CompteController::class, 'activerCompte'])->name('comptes.activer');
+        Route::post('/comptes/{id}/desactiver', [CompteController::class, 'desactiverCompte'])->name('comptes.desactiver');
+        
+        // Détails d'un compte
+        Route::get('/comptes/{id}/details', [CompteController::class, 'detailsCompte'])->name('comptes.details');
+        
+        // Export des données
+        Route::get('/comptes/export', [CompteController::class, 'exportComptes'])->name('comptes.export');
+    });
+});
+
