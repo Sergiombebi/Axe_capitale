@@ -454,7 +454,8 @@
                     </div>
                 </div>
             </div>
-
+            <!-- bloc autre compte -->
+             @include('dashboard.compte-bloque-terme-collectif')
             <!-- JavaScript -->
             <script>
                 let code = '';
