@@ -56,5 +56,7 @@ Route::middleware(['auth'])->group(function () {
         // Export des données
         Route::get('/comptes/export', [CompteController::class, 'exportComptes'])->name('comptes.export');
     });
+    Route::post('/compte/bloque/store', [CompteController::class, 'storeCompteBloque'])
+     ->name('compte.bloque.store');
 });
 

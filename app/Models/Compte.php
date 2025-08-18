@@ -28,6 +28,8 @@ class Compte extends Model
         'fait_le',
         'fait_a',
         'status',
+        'type_compte',
+        'date_deblocage',
     ];
 
     /**

@@ -11,6 +11,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CompteActive;
 use App\Mail\CompteDesactive;
+use Illuminate\Validation\Rule;
+
 class CompteController extends Controller
 {
     /**
@@ -23,7 +25,15 @@ class CompteController extends Controller
             'prenom' => 'required|string|max:255',
             'date_naissance' => 'required|date',
             'lieu_naissance' => 'required|string|max:255',
-            'cni' => 'required|string|max:100|unique:comptes,cni',
+            'cni' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('comptes')->where(function ($query) use ($request) {
+                    return $query
+                        ->where('user_id', '!=', Auth::id()); // ignore les CNI du même utilisateur
+                }),
+            ],
             'photo_cni' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'sexe' => 'required|in:Homme,Femme',
             'telephone' => 'required|string|max:20',
@@ -99,7 +109,7 @@ class CompteController extends Controller
     }
     //gestionnaire de compte il valide les comptes des utilisateur et mets le solde a jour
     //fonction qui retourne le page de tableau de bord
-   
+
     public function dashboard(Request $request)
     {
         // Vérifier que l'utilisateur est gestionnaire de compte
@@ -122,11 +132,11 @@ class CompteController extends Controller
         // Filtres
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('nom', 'like', "%{$search}%")
-                  ->orWhere('prenom', 'like', "%{$search}%")
-                  ->orWhere('cni', 'like', "%{$search}%")
-                  ->orWhere('telephone', 'like', "%{$search}%");
+                    ->orWhere('prenom', 'like', "%{$search}%")
+                    ->orWhere('cni', 'like', "%{$search}%")
+                    ->orWhere('telephone', 'like', "%{$search}%");
             });
         }
 
@@ -143,7 +153,7 @@ class CompteController extends Controller
 
         return view('dashboard.TableauBord', compact(
             'totalComptes',
-            'comptesActifs', 
+            'comptesActifs',
             'comptesInactifs',
             'comptesAujourdhui',
             'villes',
@@ -156,36 +166,36 @@ class CompteController extends Controller
         // Vérifier les permissions
         if (auth()->user()->role !== 'gestionnaire_compte') {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Permission refusée'
             ], 403);
         }
 
         try {
             $compte = Compte::with('user')->findOrFail($id);
-            
+
             // Vérifier si le compte n'est pas déjà actif
             if ($compte->status === 'actif') {
                 return response()->json([
-                    'success' => false, 
+                    'success' => false,
                     'message' => 'Le compte est déjà actif'
                 ]);
             }
-            
+
             // Vérifier que l'utilisateur a un email
             if (!$compte->user || !$compte->user->email) {
                 return response()->json([
-                    'success' => false, 
+                    'success' => false,
                     'message' => 'Email de l\'utilisateur introuvable'
                 ]);
             }
-            
+
             $compte->update(['status' => 'actif']);
-            
+
             // Envoyer l'email d'activation
             try {
                 Mail::to($compte->user->email)->queue(new CompteActive($compte));
-               $emailStatus = 'Email envoyé avec succès';
+                $emailStatus = 'Email envoyé avec succès';
             } catch (\Exception $mailException) {
                 \Illuminate\Support\Facades\Log::error("Erreur envoi email activation", [
                     'compte_id' => $id,
@@ -194,7 +204,7 @@ class CompteController extends Controller
                 ]);
                 $emailStatus = 'Compte activé mais erreur envoi email';
             }
-            
+
             // Log de l'action
             \Illuminate\Support\Facades\Log::info("Compte activé par gestionnaire", [
                 'compte_id' => $id,
@@ -203,15 +213,14 @@ class CompteController extends Controller
                 'email_status' => $emailStatus,
                 'user_email' => $compte->user->email
             ]);
-            
+
             return response()->json([
-                'success' => true, 
+                'success' => true,
                 'message' => 'Compte activé avec succès et email envoyé à ' . $compte->user->email
             ]);
-            
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Compte introuvable'
             ], 404);
         } catch (\Exception $e) {
@@ -220,9 +229,9 @@ class CompteController extends Controller
                 'erreur' => $e->getMessage(),
                 'gestionnaire_id' => auth()->id()
             ]);
-            
+
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Erreur lors de l\'activation: ' . $e->getMessage()
             ], 500);
         }
@@ -240,28 +249,28 @@ class CompteController extends Controller
 
         try {
             $compte = Compte::with('user')->findOrFail($id);
-            
+
             // Vérifier si le compte n'est pas déjà inactif
             if ($compte->status === 'inactif') {
                 return response()->json([
-                    'success' => false, 
+                    'success' => false,
                     'message' => 'Le compte est déjà inactif'
                 ]);
             }
-            
+
             // Vérifier que l'utilisateur a un email
             if (!$compte->user || !$compte->user->email) {
                 return response()->json([
-                    'success' => false, 
+                    'success' => false,
                     'message' => 'Email de l\'utilisateur introuvable'
                 ]);
             }
-            
+
             $compte->update(['status' => 'inactif']);
-            
+
             // Récupérer la raison de la désactivation si fournie
             $raison = $request->input('raison', 'Suspension temporaire pour vérification');
-            
+
             // Envoyer l'email de désactivation
             try {
                 Mail::to($compte->user->email)->queue(new CompteDesactive($compte, $raison));
@@ -274,31 +283,28 @@ class CompteController extends Controller
                 ]);
                 $emailStatus = 'Compte désactivé mais erreur envoi email';
             }
-            
+
             // Log de l'action
-            \Illuminate\Support\Facades\Log::info("Compte désactivé par gestionnaire", [
-                
-            ]);
-            
+            \Illuminate\Support\Facades\Log::info("Compte désactivé par gestionnaire", []);
+
             return response()->json([
-                'success' => true, 
+                'success' => true,
                 'message' => 'Compte désactivé avec succès et email envoyé à ' . $compte->user->email
             ]);
-            
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Compte introuvable'
             ], 404);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("Erreur désactivation compte", [
                 'compte_id' => $id,
                 'erreur' => $e->getMessage(),
-                
+
             ]);
-            
+
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Erreur lors de la désactivation: ' . $e->getMessage()
             ], 500);
         }
@@ -313,22 +319,34 @@ class CompteController extends Controller
     public function exportComptes(Request $request)
     {
         $comptes = Compte::with('user')->get();
-        
+
         $filename = 'comptes_export_' . Carbon::now()->format('Y-m-d_H-i-s') . '.csv';
-        
+
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"$filename\"",
         ];
 
-        $callback = function() use ($comptes) {
+        $callback = function () use ($comptes) {
             $file = fopen('php://output', 'w');
-            
+
             // En-têtes CSV
             fputcsv($file, [
-                'ID', 'Nom', 'Prénom', 'Date Naissance', 'Lieu Naissance', 
-                'CNI', 'Sexe', 'Téléphone', 'Pays', 'Ville', 'Quartier',
-                'Contact Urgence', 'Tel Urgence', 'Statut', 'Date Création'
+                'ID',
+                'Nom',
+                'Prénom',
+                'Date Naissance',
+                'Lieu Naissance',
+                'CNI',
+                'Sexe',
+                'Téléphone',
+                'Pays',
+                'Ville',
+                'Quartier',
+                'Contact Urgence',
+                'Tel Urgence',
+                'Statut',
+                'Date Création'
             ]);
 
             // Données
@@ -351,10 +369,67 @@ class CompteController extends Controller
                     $compte->created_at
                 ]);
             }
-            
+
             fclose($file);
         };
 
         return response()->stream($callback, 200, $headers);
     }
+    public function storeCompteBloque(Request $request)
+    {
+        //dd($request->all());
+        $request->validate([
+            'date_deblocage' => 'required|date|after_or_equal:' . now()->addMonth()->toDateString(),
+        ]);
+
+        $user = Auth::user();
+
+        // Récupérer le compte épargne de l'utilisateur
+        $compteEpargne = Compte::where('user_id', $user->id)
+            ->where('type_compte', 'epargne')
+            ->first();
+
+        if (!$compteEpargne) {
+            return redirect()->back()->with('error', 'Vous devez d’abord créer un compte épargne.');
+        }
+
+        // Créer le compte bloqué en copiant les infos
+        Compte::create([
+            'user_id'         => $user->id,
+            'type_compte'     => 'bloque',
+            'solde'           => 0.00,
+            'nom'             => $compteEpargne->nom,
+            'prenom'          => $compteEpargne->prenom,
+            'date_naissance'  => $compteEpargne->date_naissance,
+            'lieu_naissance'  => $compteEpargne->lieu_naissance,
+            'cni'             => $compteEpargne->cni,
+            'photo_cni'       => $compteEpargne->photo_cni,
+            'sexe'            => $compteEpargne->sexe,
+            'telephone'       => $compteEpargne->telephone,
+            'pays'            => $compteEpargne->pays,
+            'ville'           => $compteEpargne->ville,
+            'quartier'        => $compteEpargne->quartier,
+            'lieudit'         => $compteEpargne->lieudit,
+            'contact_urgence' => $compteEpargne->contact_urgence,
+            'tel_urgence'     => $compteEpargne->tel_urgence,
+            'fait_le'         => now()->toDateString(),
+            'fait_a'          => $compteEpargne->fait_a,
+            'status'          => 'inactif',
+            'date_deblocage'  => $request->date_deblocage,
+        ]);
+
+        return redirect()->back()->with('success', 'Compte bloqué créé avec succès.');
+    }
+   public function index()
+{
+    $user = Auth::user();
+    $compteBloque = Compte::where('user_id', $user->id)
+        ->where('type_compte', 'bloque')
+        ->first();
+    
+    // Créer une variable booléenne plus claire
+    $dejaCree = $compteBloque ? true : false;
+    
+    return view('dashboard.compte-bloque-terme-collectif', compact('compteBloque', 'dejaCree'));
+}
 }
