@@ -60,5 +60,7 @@ Route::middleware(['auth'])->group(function () {
      ->name('compte.bloque.store');
      Route::post('/compte/terme/store', [CompteController::class, 'storeCompteTerme'])
      ->name('compte.terme.store');
+     Route::patch('/comptes/{compte}/update-solde', [CompteController::class, 'updateSolde'])->name('comptes.updateSolde');
+
 });
 

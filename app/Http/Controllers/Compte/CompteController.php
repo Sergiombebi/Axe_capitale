@@ -478,6 +478,22 @@ public function storeCompteTerme(Request $request)
 
     return redirect()->back()->with('success', 'Compte à terme créé avec succès.');
 }
+public function updateSolde(Request $request, Compte $compte)
+{
+    if($compte->status != 'actif'){
+        return redirect()->back()->with('error', 'Seuls les comptes actifs peuvent être mis à jour.');
+    }
+
+    $request->validate([
+        'solde' => 'required|numeric|min:0',
+    ]);
+
+    $compte->solde = $request->solde;
+    $compte->save();
+
+    return redirect()->back()->with('success', 'Solde mis à jour avec succès.');
+}
+
 
 
 }

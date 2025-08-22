@@ -483,6 +483,7 @@
                 }
             </script>
         </div>
-     @include('dashboard.compte-bloque-terme-collectif')
+     
     </div>
+    @include('dashboard.compte-bloque-terme-collectif')
 </div>
