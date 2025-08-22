@@ -423,7 +423,7 @@
                 </div>
             </div>
 
-            
+
             <!-- Bloc principal -->
             <div style="background: white; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden;">
                 <!-- Titre -->
@@ -434,28 +434,20 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
                         </div>
-                        Actions rapides
+                        Solde du compte d'epargne
                     </h3>
                 </div>
 
-                <!-- Boutons -->
-                <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
-                    
-                    <button id="btnGenerer" onclick="genererCodeSecret()" style="width: 100%; padding: 0.75rem 1rem; background: linear-gradient(90deg, #ec4899 0%, #db2777 100%); color: white; font-weight: 600; border-radius: 12px; cursor: pointer; border: none; transition: all 0.2s;"
-                        onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 10px 15px -3px rgba(236, 72, 153, 0.3)'"
-                        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
-                        Générer un code secret
-                    </button>
-
-                    <!-- Affichage du code -->
-                    <div id="codeContainer" style="text-align: center; font-size: 1.5rem; font-weight: bold; color: #6b21a8; margin-top: 0.5rem; display: none;">
-                        <span id="codeSecret">••••••</span>
-                        <button onclick="toggleVisibility()" style="background: none; border: none; cursor: pointer; margin-left: 0.5rem; color: #7c3aed; font-size: 1.25rem;">👁️</button>
-                    </div>
+                <!-- Affichage du solde -->
+                <div style="padding: 1.5rem; text-align: center;">
+                    <p style="font-size: 1.5rem; font-weight: bold; color: #6b21a8; margin: 0;">
+                        {{ number_format($compte->solde, 0, ',', ' ') }} FCFA
+                    </p>
                 </div>
             </div>
+
             <!-- bloc autre compte -->
-             @include('dashboard.compte-bloque-terme-collectif')
+           
             <!-- JavaScript -->
             <script>
                 let code = '';
@@ -490,3 +482,7 @@
                     document.getElementById("codeSecret").innerText = visible ? code : "••••••";
                 }
             </script>
+        </div>
+     @include('dashboard.compte-bloque-terme-collectif')
+    </div>
+</div>

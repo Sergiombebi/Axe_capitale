@@ -58,5 +58,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::post('/compte/bloque/store', [CompteController::class, 'storeCompteBloque'])
      ->name('compte.bloque.store');
+     Route::post('/compte/terme/store', [CompteController::class, 'storeCompteTerme'])
+     ->name('compte.terme.store');
 });
 

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CompteActive;
 use App\Mail\CompteDesactive;
 use Illuminate\Validation\Rule;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class CompteController extends Controller
 {
@@ -432,4 +433,51 @@ class CompteController extends Controller
     
     return view('dashboard.compte-bloque-terme-collectif', compact('compteBloque', 'dejaCree'));
 }
+public function storeCompteTerme(Request $request)
+{
+    //dd($request->all());
+    $request->validate([
+        'date_deblocage' => 'required|date|after_or_equal:' . now()->addMonths(2)->toDateString(),
+    ]);
+
+    $user = Auth::user();
+
+    // Récupérer le compte épargne de l'utilisateur
+    $compteEpargne = Compte::where('user_id', $user->id)
+        ->where('type_compte', 'epargne')
+        ->first();
+
+    if (!$compteEpargne) {
+        return redirect()->back()->with('error', 'Vous devez d’abord créer un compte épargne.');
+    }
+
+    // Créer le compte à terme en copiant les infos
+    Compte::create([
+        'user_id'         => $user->id,
+        'type_compte'     => 'terme',
+        'solde'           => 0.00,
+        'nom'             => $compteEpargne->nom,
+        'prenom'          => $compteEpargne->prenom,
+        'date_naissance'  => $compteEpargne->date_naissance,
+        'lieu_naissance'  => $compteEpargne->lieu_naissance,
+        'cni'             => $compteEpargne->cni,
+        'photo_cni'       => $compteEpargne->photo_cni,
+        'sexe'            => $compteEpargne->sexe,
+        'telephone'       => $compteEpargne->telephone,
+        'pays'            => $compteEpargne->pays,
+        'ville'           => $compteEpargne->ville,
+        'quartier'        => $compteEpargne->quartier,
+        'lieudit'         => $compteEpargne->lieudit,
+        'contact_urgence' => $compteEpargne->contact_urgence,
+        'tel_urgence'     => $compteEpargne->tel_urgence,
+        'fait_le'         => now()->toDateString(),
+        'fait_a'          => $compteEpargne->fait_a,
+        'status'          => 'inactif',
+        'date_deblocage'  => $request->date_deblocage,
+    ]);
+
+    return redirect()->back()->with('success', 'Compte à terme créé avec succès.');
+}
+
+
 }

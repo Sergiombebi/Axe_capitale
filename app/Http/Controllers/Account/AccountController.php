@@ -13,24 +13,30 @@ class AccountController extends Controller
   public function index()
 {
     $user = Auth::user();
-    
+   
     // Récupérer le compte principal (comme actuellement)
     $compte = Compte::where('user_id', $user->id)->first();
     $dejaCree = $compte !== null;
-    
+   
     // Récupérer SPÉCIFIQUEMENT le compte bloqué
     $compteBloque = Compte::where('user_id', $user->id)
         ->where('type_compte', 'bloque')
         ->first();
-    
-    // Variable pour vérifier si le compte bloqué existe
     $bloqueExiste = $compteBloque !== null;
     
+    // Récupérer SPÉCIFIQUEMENT le compte à terme
+    $compteTerme = Compte::where('user_id', $user->id)
+        ->where('type_compte', 'terme')
+        ->first();
+    $termeExiste = $compteTerme !== null;
+   
     return view('dashboard.CreateAccount', compact(
-        'dejaCree',       // Pour le compte principal
-        'compte',         // Données du compte principal
-        'compteBloque',   // Données du compte bloqué (null si n'existe pas)
-        'bloqueExiste'    // Boolean pour vérifier l'existence du compte bloqué
+        'dejaCree',        // Boolean : compte principal existe ?
+        'compte',          // Objet : données du compte principal
+        'compteBloque',    // Objet : données du compte bloqué (ou null)
+        'bloqueExiste',    // Boolean : compte bloqué existe ?
+        'compteTerme',     // Objet : données du compte à terme (ou null)
+        'termeExiste'      // Boolean : compte à terme existe ?
     ));
 }
 
