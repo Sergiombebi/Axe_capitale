@@ -203,7 +203,8 @@
                             <td style="padding: 15px;">
                                 @if($compte->photo_cni && file_exists(storage_path('app/public/' . $compte->photo_cni)))
                                 <img src="{{ asset('storage/' . $compte->photo_cni) }}"
-                                    onclick="showImageModal('{{ asset('/' . $compte->photo_cni) }}', '{{ $compte->nom }} {{ $compte->prenom }}')"
+                                    onclick="showImageModal('{{ asset('storage/' . $compte->photo_cni) }}', '{{ $compte->nom }} {{ $compte->prenom }}')"
+
                                     style="width: 60px; height: 40px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid #e2e8f0; transition: all 0.3s;"
                                     onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"
                                     alt="CNI de {{ $compte->nom }} {{ $compte->prenom }}">
@@ -316,35 +317,6 @@
             </div>
             @endif
         </div>
-
-        {{-- Script pour modifier le solde --}}
-        <script>
-            function modifierSolde(compteId, soldeActuel) {
-                let nouveauSolde = prompt("Solde actuel: " + soldeActuel + " FCFA\nEntrez le nouveau solde :");
-                if (nouveauSolde !== null) {
-                    fetch('/comptes/' + compteId + '/update-solde', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                solde: nouveauSolde
-                            })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("Solde mis à jour avec succès !");
-                                location.reload();
-                            } else {
-                                alert("Erreur : " + data.message);
-                            }
-                        });
-                }
-            }
-        </script>
-
     </div>
 </div>
 

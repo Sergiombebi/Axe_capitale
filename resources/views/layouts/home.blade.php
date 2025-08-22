@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Axe Capital') }}</title>
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" type="image/png">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Styles pour la sidebar et navbar fixes */
@@ -101,11 +103,7 @@
                     {{-- Logo --}}
                     <a href="{{route('welcome')}}" class="block hover:scale-[1.02] transition-transform duration-200">
                         <div class="text-center">
-                            <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                            </div>
+                            <img src="{{ asset('images/logo.png') }}" alt="logo" width="100" height="100">
                             <h1 class="text-xl font-bold text-gray-800">Axe Capital</h1>
                             <p class="text-sm text-gray-500 mt-1">Gestion financière</p>
                         </div>

@@ -195,7 +195,7 @@ class CompteController extends Controller
 
             // Envoyer l'email d'activation
             try {
-                Mail::to($compte->user->email)->queue(new CompteActive($compte));
+                Mail::to($compte->user->email)->send(new CompteActive($compte));
                 $emailStatus = 'Email envoyé avec succès';
             } catch (\Exception $mailException) {
                 \Illuminate\Support\Facades\Log::error("Erreur envoi email activation", [
@@ -421,79 +421,76 @@ class CompteController extends Controller
 
         return redirect()->back()->with('success', 'Compte bloqué créé avec succès.');
     }
-   public function index()
-{
-    $user = Auth::user();
-    $compteBloque = Compte::where('user_id', $user->id)
-        ->where('type_compte', 'bloque')
-        ->first();
-    
-    // Créer une variable booléenne plus claire
-    $dejaCree = $compteBloque ? true : false;
-    
-    return view('dashboard.compte-bloque-terme-collectif', compact('compteBloque', 'dejaCree'));
-}
-public function storeCompteTerme(Request $request)
-{
-    //dd($request->all());
-    $request->validate([
-        'date_deblocage' => 'required|date|after_or_equal:' . now()->addMonths(2)->toDateString(),
-    ]);
+    public function index()
+    {
+        $user = Auth::user();
+        $compteBloque = Compte::where('user_id', $user->id)
+            ->where('type_compte', 'bloque')
+            ->first();
 
-    $user = Auth::user();
+        // Créer une variable booléenne plus claire
+        $dejaCree = $compteBloque ? true : false;
 
-    // Récupérer le compte épargne de l'utilisateur
-    $compteEpargne = Compte::where('user_id', $user->id)
-        ->where('type_compte', 'epargne')
-        ->first();
-
-    if (!$compteEpargne) {
-        return redirect()->back()->with('error', 'Vous devez d’abord créer un compte épargne.');
+        return view('dashboard.compte-bloque-terme-collectif', compact('compteBloque', 'dejaCree'));
     }
+    public function storeCompteTerme(Request $request)
+    {
+        //dd($request->all());
+        $request->validate([
+            'date_deblocage' => 'required|date|after_or_equal:' . now()->addMonths(2)->toDateString(),
+        ]);
 
-    // Créer le compte à terme en copiant les infos
-    Compte::create([
-        'user_id'         => $user->id,
-        'type_compte'     => 'terme',
-        'solde'           => 0.00,
-        'nom'             => $compteEpargne->nom,
-        'prenom'          => $compteEpargne->prenom,
-        'date_naissance'  => $compteEpargne->date_naissance,
-        'lieu_naissance'  => $compteEpargne->lieu_naissance,
-        'cni'             => $compteEpargne->cni,
-        'photo_cni'       => $compteEpargne->photo_cni,
-        'sexe'            => $compteEpargne->sexe,
-        'telephone'       => $compteEpargne->telephone,
-        'pays'            => $compteEpargne->pays,
-        'ville'           => $compteEpargne->ville,
-        'quartier'        => $compteEpargne->quartier,
-        'lieudit'         => $compteEpargne->lieudit,
-        'contact_urgence' => $compteEpargne->contact_urgence,
-        'tel_urgence'     => $compteEpargne->tel_urgence,
-        'fait_le'         => now()->toDateString(),
-        'fait_a'          => $compteEpargne->fait_a,
-        'status'          => 'inactif',
-        'date_deblocage'  => $request->date_deblocage,
-    ]);
+        $user = Auth::user();
 
-    return redirect()->back()->with('success', 'Compte à terme créé avec succès.');
-}
-public function updateSolde(Request $request, Compte $compte)
-{
-    if($compte->status != 'actif'){
-        return redirect()->back()->with('error', 'Seuls les comptes actifs peuvent être mis à jour.');
+        // Récupérer le compte épargne de l'utilisateur
+        $compteEpargne = Compte::where('user_id', $user->id)
+            ->where('type_compte', 'epargne')
+            ->first();
+
+        if (!$compteEpargne) {
+            return redirect()->back()->with('error', 'Vous devez d’abord créer un compte épargne.');
+        }
+
+        // Créer le compte à terme en copiant les infos
+        Compte::create([
+            'user_id'         => $user->id,
+            'type_compte'     => 'terme',
+            'solde'           => 0.00,
+            'nom'             => $compteEpargne->nom,
+            'prenom'          => $compteEpargne->prenom,
+            'date_naissance'  => $compteEpargne->date_naissance,
+            'lieu_naissance'  => $compteEpargne->lieu_naissance,
+            'cni'             => $compteEpargne->cni,
+            'photo_cni'       => $compteEpargne->photo_cni,
+            'sexe'            => $compteEpargne->sexe,
+            'telephone'       => $compteEpargne->telephone,
+            'pays'            => $compteEpargne->pays,
+            'ville'           => $compteEpargne->ville,
+            'quartier'        => $compteEpargne->quartier,
+            'lieudit'         => $compteEpargne->lieudit,
+            'contact_urgence' => $compteEpargne->contact_urgence,
+            'tel_urgence'     => $compteEpargne->tel_urgence,
+            'fait_le'         => now()->toDateString(),
+            'fait_a'          => $compteEpargne->fait_a,
+            'status'          => 'inactif',
+            'date_deblocage'  => $request->date_deblocage,
+        ]);
+
+        return redirect()->back()->with('success', 'Compte à terme créé avec succès.');
     }
+    public function updateSolde(Request $request, Compte $compte)
+    {
+        if ($compte->status != 'actif') {
+            return redirect()->back()->with('error', 'Seuls les comptes actifs peuvent être mis à jour.');
+        }
 
-    $request->validate([
-        'solde' => 'required|numeric|min:0',
-    ]);
+        $request->validate([
+            'solde' => 'required|numeric|min:0',
+        ]);
 
-    $compte->solde = $request->solde;
-    $compte->save();
+        $compte->solde = $request->solde;
+        $compte->save();
 
-    return redirect()->back()->with('success', 'Solde mis à jour avec succès.');
-}
-
-
-
+        return redirect()->back()->with('success', 'Solde mis à jour avec succès.');
+    }
 }
