@@ -7,6 +7,7 @@ use App\Mail\VerificationCodeMail;
 use App\Http\Controllers\Auth\VerificationCodeView;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Compte\CompteController;
+use App\Http\Controllers\Credit\CreditController;
 
 // ✅ Ajouter un nom à la route
 Route::get('/', function () {
@@ -62,5 +63,8 @@ Route::middleware(['auth'])->group(function () {
      ->name('compte.terme.store');
      Route::patch('/comptes/{compte}/update-solde', [CompteController::class, 'updateSolde'])->name('comptes.updateSolde');
 
+
+     //credit
+     Route::get('/credit', [CreditController::class, 'credit'])->name('credit');
 });
 
