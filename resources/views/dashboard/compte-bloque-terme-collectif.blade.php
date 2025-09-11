@@ -313,7 +313,7 @@
               <path d="M9 11H7v8h2v-8zm4 0h-2v8h2v-8zm4 0h-2v8h2v-8zm2-7v2H3V4h3.5l1-1h5l1 1H17z" />
             </svg>
           </div>
-          Date de déblocage (min. 1 mois)
+          Date de déblocage (min. 3 mois)
         </label>
         <input type="date" name="date_deblocage" required style="width: 100%; padding: 0.75rem 1rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 16px; transition: all 0.3s; outline: none; font-size: 1rem;"
           onfocus="this.style.borderColor='#4f46e5'; this.style.boxShadow='0 0 0 2px rgba(79, 70, 229, 0.2)'; this.style.transform='translateY(-1px)'"
@@ -342,7 +342,7 @@
 
   </div>
 
-  <script>
+  <script>`
     let selectedAccount = null;
     let members = [];
 

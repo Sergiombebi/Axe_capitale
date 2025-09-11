@@ -66,5 +66,9 @@ Route::middleware(['auth'])->group(function () {
 
      //credit
      Route::get('/credit', [CreditController::class, 'credit'])->name('credit');
+     Route::get('/credit/versement', [CreditController::class, 'formdemandecredit'])->name('credit.form');
+     Route::post('/credits', [CreditController::class, 'store'])->name('credits.store');
+     Route::get('/gestioncredit',[CreditController::class,'gestionCredit'])->name(('credit.dashboard'));
+    Route::get('/statuscredit',[CreditController::class,'Statuscredit'])->name(('credit.status'));
 });
 

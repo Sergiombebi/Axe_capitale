@@ -380,7 +380,8 @@ class CompteController extends Controller
     {
         //dd($request->all());
         $request->validate([
-            'date_deblocage' => 'required|date|after_or_equal:' . now()->addMonth()->toDateString(),
+            'date_deblocage' => 'required|date|after_or_equal:' . now()->addMonths(3)->toDateString(),
+
         ]);
 
         $user = Auth::user();
@@ -399,6 +400,8 @@ class CompteController extends Controller
             'user_id'         => $user->id,
             'type_compte'     => 'bloque',
             'solde'           => 0.00,
+            'numero_compte'   => $compteEpargne->numero_compte,
+            'code_secret'     =>$compteEpargne->code_secret,
             'nom'             => $compteEpargne->nom,
             'prenom'          => $compteEpargne->prenom,
             'date_naissance'  => $compteEpargne->date_naissance,
@@ -456,6 +459,8 @@ class CompteController extends Controller
             'user_id'         => $user->id,
             'type_compte'     => 'terme',
             'solde'           => 0.00,
+            'numero_compte'   => $compteEpargne->numero_compte,
+            'code_secret'     =>$compteEpargne->code_secret,
             'nom'             => $compteEpargne->nom,
             'prenom'          => $compteEpargne->prenom,
             'date_naissance'  => $compteEpargne->date_naissance,

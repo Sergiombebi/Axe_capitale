@@ -3,7 +3,7 @@
 @section('content')
 <div style="min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px;">
     <div style="max-width: 1200px; margin: 0 auto;">
-        
+
         <!-- Header Principal -->
         <div style="text-align: center; margin-bottom: 50px;">
             <h1 style="color: white; font-size: 3rem; font-weight: bold; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
@@ -24,7 +24,7 @@
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-                
+
                 <!-- Condition 1 -->
                 <div style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 25px; border-radius: 15px; text-align: center;">
                     <div style="font-size: 3rem; margin-bottom: 15px;">⏱️</div>
@@ -64,7 +64,7 @@
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                
+
                 <div style="background: #f8f9ff; border-left: 5px solid #6c5ce7; padding: 20px; border-radius: 10px;">
                     <div style="display: flex; align-items: center; margin-bottom: 10px;">
                         <span style="font-size: 1.5rem; margin-right: 10px;">✍️</span>
@@ -100,7 +100,7 @@
 
         <!-- Section Tarification -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-bottom: 30px;">
-            
+
             <!-- Frais et Taux -->
             <div style="background: white; border-radius: 20px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
                 <div style="text-align: center; margin-bottom: 25px;">
@@ -123,12 +123,12 @@
                             <span style="font-weight: bold; color: #2c3e50;">Taux d'intérêt:</span>
                         </div>
                         <div style="margin-bottom: 8px;">
-                            <span style="color: #636e72;">• ≤ 3 mois:</span>
-                            <span style="background: #74b9ff; color: white; padding: 3px 10px; border-radius: 15px; font-weight: bold; margin-left: 10px;">10%</span>
+                            <span style="color: #636e72;">• < 6 mois:</span>
+                                    <span style="background: #74b9ff; color: white; padding: 3px 10px; border-radius: 15px; font-weight: bold; margin-left: 10px;">10% par mois</span>
                         </div>
                         <div>
-                            <span style="color: #636e72;">• > 3 mois:</span>
-                            <span style="background: #e17055; color: white; padding: 3px 10px; border-radius: 15px; font-weight: bold; margin-left: 10px;">20%</span>
+                            <span style="color: #636e72;">• ≥ 6 mois d'ancienneté:</span>
+                            <span style="background: #00b894; color: white; padding: 3px 10px; border-radius: 15px; font-weight: bold; margin-left: 10px;">10% par trimestre</span>
                         </div>
                     </div>
 
@@ -168,7 +168,7 @@
                             </div>
                             <span style="color: #2c3e50; font-weight: bold; font-size: 0.9rem;">Intérêt total</span>
                         </div>
-                        
+
                         <div style="text-align: center;">
                             <div style="background: #74b9ff; color: white; padding: 15px; border-radius: 50%; font-size: 1.3rem; margin-bottom: 10px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto;">
                                 2.5%
@@ -185,8 +185,8 @@
             <div style="font-size: 3rem; margin-bottom: 15px;">⚠️</div>
             <h3 style="margin: 0 0 15px 0; font-size: 1.8rem;">IMPORTANT À RETENIR</h3>
             <p style="margin: 0; font-size: 1.1rem; line-height: 1.6; opacity: 0.95;">
-                L'emprunteur doit être une personne <strong>fiable et honnête</strong>. 
-                Tous les documents requis doivent être fournis pour l'étude du dossier. 
+                L'emprunteur doit être une personne <strong>fiable et honnête</strong>.
+                Tous les documents requis doivent être fournis pour l'étude du dossier.
                 Le respect des délais de remboursement est essentiel pour éviter les pénalités.
             </p>
         </div>
@@ -194,11 +194,38 @@
         <!-- Call to Action -->
         <div style="text-align: center; margin-top: 40px;">
             <div style="background: white; border-radius: 15px; padding: 25px; display: inline-block; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                <p style="color: #2c3e50; margin: 0 0 15px 0; font-size: 1.1rem;">
-                    Prêt à faire votre demande de crédit ?
+                <p style="color: #2c3e50; margin: 0 0 20px 0; font-size: 1.1rem;">
+                    Gérez votre crédit facilement
                 </p>
-                <a href="#" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; padding: 15px 35px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; display: inline-block; transition: all 0.3s;">
+
+                <!-- Bouton pour faire une demande -->
+                <a href="{{ route('credit.form') }}"
+                    style="background: linear-gradient(135deg, #667eea, #764ba2); 
+                  color: white; 
+                  text-decoration: none; 
+                  padding: 15px 35px; 
+                  border-radius: 50px; 
+                  font-weight: bold; 
+                  font-size: 1.1rem; 
+                  display: inline-block; 
+                  transition: all 0.3s;
+                  margin: 5px 10px;">
                     📝 Faire une demande
+                </a>
+
+                <!-- Bouton pour voir l'état du crédit -->
+                <a href="{{ route('credit.status') }}"
+                    style="background: linear-gradient(135deg, #f093fb, #f5576c); 
+                  color: white; 
+                  text-decoration: none; 
+                  padding: 15px 35px; 
+                  border-radius: 50px; 
+                  font-weight: bold; 
+                  font-size: 1.1rem; 
+                  display: inline-block; 
+                  transition: all 0.3s;
+                  margin: 5px 10px;">
+                    📊 Voir l'état du crédit
                 </a>
             </div>
         </div>

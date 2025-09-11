@@ -84,19 +84,35 @@
 <div class="space-y-8">
     <!-- En-tête avec statut -->
     <!-- Message de succès -->
-    <div class="bg-gradient-to-r from-green-100 to-green-200 rounded-xl shadow-lg p-4 mb-6 border border-green-300">
-        <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="bg-gradient-to-r from-green-100 to-green-200 rounded-xl shadow-lg p-6 mb-6 border border-green-300">
+        <div class="flex items-start space-x-4">
+            <!-- Icône -->
+            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
-            <div>
-                <h3 class="text-lg font-semibold text-black">Compte créé avec succès !</h3>
-                <p class="text-green-700 text-sm">Votre demande d'ouverture de compte a été enregistrée.</p>
+
+            <!-- Texte principal -->
+            <div class="flex-1">
+                <h3 class="text-lg font-semibold text-black mb-1">Compte créé avec succès !</h3>
+                <p class="text-green-700 text-sm mb-2">Votre demande d'ouverture de compte a été enregistrée.</p>
+
+                <!-- Code secret -->
+                <p class="font-medium text-gray-800">
+                    Votre code secret pour les retraits :
+                    <span
+                        style="font-weight: 700; color: #1d4ed8; filter: blur(6px); transition: filter 0.3s; cursor: pointer;"
+                        onmouseover="this.style.filter='none'"
+                        onmouseout="this.style.filter='blur(6px)'">
+                        {{ $compte->code_secret ?? 'XXXX' }}
+                    </span>
+                </p>
+
             </div>
         </div>
     </div>
+
 
     <!-- Carte principale stylisée comme l'image -->
     <div class="shadow-2xl p-8 relative overflow-hidden" style="background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 50%, #9333ea 100%); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 24px;">
@@ -110,6 +126,10 @@
             <div>
                 <h1 style="font-size: 2.25rem; font-weight: 700; color: white; margin-bottom: 0.5rem; text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);">Mon Compte AXE CAPITAL</h1>
                 <p style="color: rgba(255, 255, 255, 0.95); font-size: 1.125rem; font-weight: 600;">{{ $compte->nom ?? 'Nom complet' }}</p>
+                <!-- Numéro de compte -->
+                <p style="color: rgba(255, 255, 255, 0.85); font-size: 1rem; font-weight: 500; margin-top: 0.25rem;">
+                    Numéro de compte : <span style="font-weight: 700;">{{ $compte->numero_compte ?? 'AXC0000' }}</span>
+                </p>
                 <p style="color: rgba(255, 255, 255, 0.75); font-size: 0.875rem; margin-top: 0.25rem;">Membre depuis <span style="font-weight: 500;">{{ $compte->created_at->format('F Y') ?? 'Janvier 2025' }}</span></p>
             </div>
             <div class="text-right">
@@ -380,7 +400,7 @@
                             <span style="font-weight: 600; color: #065f46; font-size: 1.125rem;">Compte actif</span>
                         </div>
                         <p style="font-size: 0.875rem; color: #065f46; line-height: 1.6; margin: 0 0 0.75rem 0;">
-                            Votre compte est opérationnel. Vous pouvez effectuer toutes les opérations bancaires.
+                            Votre compte est opérationnel. Vous pouvez effectuer toutes les opérations.
                         </p>
                         <div style="background: rgba(255, 255, 255, 0.7); border-radius: 12px; padding: 0.75rem;">
                             <p style="font-size: 0.75rem; color: #065f46; margin: 0;">
@@ -447,7 +467,7 @@
             </div>
 
             <!-- bloc autre compte -->
-           
+
             <!-- JavaScript -->
             <script>
                 let code = '';
@@ -483,7 +503,7 @@
                 }
             </script>
         </div>
-     
+
     </div>
     @include('dashboard.compte-bloque-terme-collectif')
 </div>
