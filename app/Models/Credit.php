@@ -132,7 +132,10 @@ class Credit extends Model
     {
         return $this->belongsTo(Compte::class);
     }
-
+    public function remboursements()
+    {
+        return $this->hasMany(Remboursement::class);
+    }
     public function traitePar()
     {
         return $this->belongsTo(User::class, 'traite_par');
@@ -256,7 +259,7 @@ class Credit extends Model
 
         // Calculer les intérêts
         $interets = $this->montant * ($this->taux_interet / 100);
-        
+
         // Montant total à rembourser
         $this->montant_total_rembourser = $this->montant + $interets;
 
@@ -284,11 +287,11 @@ class Credit extends Model
     public function changerStatut($nouveauStatut, $motif = null, $utilisateurId = null)
     {
         $ancienStatut = $this->status;
-        
+
         // Mettre à jour le statut
         $this->status = $nouveauStatut;
         $this->date_traitement = now();
-        
+
         if ($utilisateurId) {
             $this->traite_par = $utilisateurId;
         }
@@ -336,7 +339,7 @@ class Credit extends Model
 
         if ($now->gt($dateEcheance)) {
             $this->jours_retard = $now->diffInDays($dateEcheance);
-            
+
             // Calculer les pénalités (1000 FCFA par jour, max 30 jours)
             $joursFactures = min($this->jours_retard, 30);
             $this->penalites = $joursFactures * 1000;
@@ -386,7 +389,7 @@ class Credit extends Model
     public function verifierEligibilite()
     {
         $compte = $this->compte;
-        
+
         if (!$compte) {
             return ['eligible' => false, 'raison' => 'Compte introuvable'];
         }
@@ -412,7 +415,7 @@ class Credit extends Model
         $annee = date('Y');
         $mois = date('m');
         $numero = str_pad($this->id, 4, '0', STR_PAD_LEFT);
-        
+
         return "CR{$annee}{$mois}{$numero}";
     }
 
@@ -457,13 +460,13 @@ class Credit extends Model
     public function documentsComplets()
     {
         $documents = $this->getDocuments();
-        
+
         foreach ($documents as $document) {
             if (empty($document)) {
                 return false;
             }
         }
-        
+
         return true;
     }
 }

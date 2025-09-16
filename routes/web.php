@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\VerificationCodeView;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Compte\CompteController;
 use App\Http\Controllers\Credit\CreditController;
+use App\Http\Controllers\FinancementProjet\FinancementProjet;
 
 // ✅ Ajouter un nom à la route
 Route::get('/', function () {
@@ -15,7 +16,7 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/inscription', [RegisterController::class, 'showForm'])->name('register.form');
-Route::get('/connexion',[LoginController::class, 'showFormLogin'])->name('login');
+Route::get('/connexion', [LoginController::class, 'showFormLogin'])->name('login');
 
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
@@ -40,35 +41,48 @@ Route::post('/compte/store', [CompteController::class, 'store'])->middleware('au
 Route::put('/compte/{id}', [CompteController::class, 'update'])->name('compte.update');
 // route pour le tableau de bord
 Route::middleware(['auth'])->group(function () {
-    
+
     // Dashboard principal
     Route::get('/dashboard', [CompteController::class, 'dashboard'])->name('dashboard');
-    
+
     // Routes spécifiques au gestionnaire de comptes
     Route::prefix('gestionnaire')->name('gestionnaire.')->group(function () {
-        
+
         // Activation/Désactivation des comptes
         Route::post('/comptes/{id}/activer', [CompteController::class, 'activerCompte'])->name('comptes.activer');
         Route::post('/comptes/{id}/desactiver', [CompteController::class, 'desactiverCompte'])->name('comptes.desactiver');
-        
+
         // Détails d'un compte
         Route::get('/comptes/{id}/details', [CompteController::class, 'detailsCompte'])->name('comptes.details');
-        
+
         // Export des données
         Route::get('/comptes/export', [CompteController::class, 'exportComptes'])->name('comptes.export');
     });
     Route::post('/compte/bloque/store', [CompteController::class, 'storeCompteBloque'])
-     ->name('compte.bloque.store');
-     Route::post('/compte/terme/store', [CompteController::class, 'storeCompteTerme'])
-     ->name('compte.terme.store');
-     Route::patch('/comptes/{compte}/update-solde', [CompteController::class, 'updateSolde'])->name('comptes.updateSolde');
+        ->name('compte.bloque.store');
+    Route::post('/compte/terme/store', [CompteController::class, 'storeCompteTerme'])
+        ->name('compte.terme.store');
+    Route::patch('/comptes/{compte}/update-solde', [CompteController::class, 'updateSolde'])->name('comptes.updateSolde');
 
 
-     //credit
-     Route::get('/credit', [CreditController::class, 'credit'])->name('credit');
-     Route::get('/credit/versement', [CreditController::class, 'formdemandecredit'])->name('credit.form');
-     Route::post('/credits', [CreditController::class, 'store'])->name('credits.store');
-     Route::get('/gestioncredit',[CreditController::class,'gestionCredit'])->name(('credit.dashboard'));
-    Route::get('/statuscredit',[CreditController::class,'Statuscredit'])->name(('credit.status'));
+    //credit
+    Route::get('/credit', [CreditController::class, 'credit'])->name('credit');
+    Route::get('/credit/versement', [CreditController::class, 'formdemandecredit'])->name('credit.form');
+    Route::post('/credits', [CreditController::class, 'store'])->name('credits.store');
+    Route::get('/gestioncredit', [CreditController::class, 'gestionCredit'])->name(('credit.dashboard'));
+    Route::get('/statuscredit', [CreditController::class, 'Statuscredit'])->name(('credit.status'));
+   Route::middleware(['auth'])->prefix('gestionnaire')->name('gestionnaire.')->group(function () {
+    Route::get('/credits', [CreditController::class, 'index'])->name('credits.index');
+    Route::get('/credits/export', [CreditController::class, 'export'])->name('credits.export');
+    Route::get('/credits/{credit}/traiter', [CreditController::class, 'traiter'])->name('credits.traiter');
+    Route::post('/credits/{credit}/traiter', [CreditController::class, 'traiterPost'])->name('credits.traiter.post');
+    Route::get('/credits/{credit}/debourser', [CreditController::class, 'debourser'])->name('credits.debourser');
+    Route::get('/credits/{credit}/rembourser', [CreditController::class, 'rembourser'])->name('credits.rembourser');
+    Route::post('/credits/{credit}/rembourser', [CreditController::class, 'rembourserPost'])->name('credits.rembourser.post');
+    Route::get('/credits/{credit}/details', [CreditController::class, 'details'])->name('credits.details');
+    Route::get('/credits/{credit}/document/{type}', [CreditController::class, 'document'])->name('credits.document');
 });
 
+//financement de projet
+Route::get('/financement', [FinancementProjet::class, 'financement'])->name('financement');
+});

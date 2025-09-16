@@ -3,135 +3,6 @@
 {{-- Vue de gestion des crédits pour gestionnaire_credit --}}
 <section style="min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;">
 
-{{-- Modals --}}
-{{-- Modal pour afficher les documents --}}
-<div id="documentModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="position: relative; max-width: 90%; max-height: 90%; background: white; border-radius: 15px; padding: 20px;">
-        <button onclick="closeDocumentModal()" style="position: absolute; top: 10px; right: 15px; background: #f56565; color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: bold;">×</button>
-        <h3 id="documentTitle" style="margin: 0 0 15px 0; color: #2d3748; text-align: center;"></h3>
-        <img id="documentImage" style="max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 10px;">
-        <div style="text-align: center; margin-top: 15px;">
-            <button onclick="downloadDocument()" style="background: #4299e1; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                Télécharger
-            </button>
-        </div>
-    </div>
-</div>
-
-{{-- Modal pour traitement de crédit --}}
-<div id="traitementModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1001; justify-content: center; align-items: center;">
-    <div style="background: white; border-radius: 15px; padding: 30px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
-        <h3 style="margin: 0 0 20px 0; color: #2d3748; text-align: center; font-size: 1.3rem;">
-            Traitement de la Demande de Crédit
-        </h3>
-
-        <form id="traitementForm" style="display: flex; flex-direction: column; gap: 20px;">
-            <div>
-                <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
-                    Décision :
-                </label>
-                <select id="decisionSelect" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px;" onchange="toggleDecisionFields()">
-                    <option value="">Sélectionner une décision...</option>
-                    <option value="approuve">Approuver</option>
-                    <option value="rejete">Rejeter</option>
-                    <option value="en_etude">Mettre en étude</option>
-                </select>
-            </div>
-
-            <div id="motifRejetDiv" style="display: none;">
-                <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
-                    Motif de rejet :
-                </label>
-                <textarea id="motifRejet" placeholder="Expliquez les raisons du rejet..."
-                    style="width: 100%; min-height: 100px; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; resize: vertical; font-family: inherit;"></textarea>
-            </div>
-
-            <div id="observationsDiv">
-                <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
-                    Observations :
-                </label>
-                <textarea id="observations" placeholder="Commentaires ou observations..."
-                    style="width: 100%; min-height: 80px; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; resize: vertical; font-family: inherit;"></textarea>
-            </div>
-
-            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
-                <button type="button" onclick="closeTraitementModal()"
-                    style="background: #a0aec0; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                    Annuler
-                </button>
-                <button type="button" onclick="confirmerTraitement()"
-                    style="background: #48bb78; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                    Confirmer
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-{{-- Modal pour remboursement --}}
-<div id="remboursementModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1001; justify-content: center; align-items: center;">
-    <div style="background: white; border-radius: 15px; padding: 30px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
-        <h3 style="margin: 0 0 20px 0; color: #2d3748; text-align: center; font-size: 1.3rem;">
-            Enregistrer un Remboursement
-        </h3>
-
-        <form id="remboursementForm" style="display: flex; flex-direction: column; gap: 20px;">
-            <div>
-                <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
-                    Montant remboursé :
-                </label>
-                <input type="number" id="montantRemboursement" placeholder="Montant en FCFA" step="0.01"
-                    style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-            </div>
-
-            <div>
-                <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
-                    Type de remboursement :
-                </label>
-                <select id="typeRemboursement" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                    <option value="partiel">Remboursement partiel</option>
-                    <option value="total">Remboursement total</option>
-                    <option value="echeance">Échéance mensuelle</option>
-                </select>
-            </div>
-
-            <div>
-                <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
-                    Notes :
-                </label>
-                <textarea id="notesRemboursement" placeholder="Notes sur le remboursement..."
-                    style="width: 100%; min-height: 80px; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; resize: vertical; font-family: inherit;"></textarea>
-            </div>
-
-            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
-                <button type="button" onclick="closeRemboursementModal()"
-                    style="background: #a0aec0; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                    Annuler
-                </button>
-                <button type="button" onclick="confirmerRemboursement()"
-                    style="background: #48bb78; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                    Enregistrer
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-{{-- Modal détails crédit --}}
-<div id="detailsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1001; justify-content: center; align-items: center;">
-    <div style="background: white; border-radius: 15px; padding: 30px; max-width: 800px; width: 90%; max-height: 80vh; overflow-y: auto;">
-        <h3 style="margin: 0 0 20px 0; color: #2d3748; text-align: center; font-size: 1.3rem;">
-            Détails du Crédit
-        </h3>
-        <div id="detailsContent" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;"></div>
-        <div style="text-align: center; margin-top: 20px;">
-            <button onclick="closeDetailsModal()" style="background: #a0aec0; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                Fermer
-            </button>
-        </div>
-    </div>
-</div>
-
 @if(auth()->user()->role !== 'gestionnaire_credit')
 <div style="background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px; padding: 16px; margin: 20px; color: #dc2626; text-align: center;">
     <h3>Accès non autorisé</h3>
@@ -148,12 +19,12 @@
                     <p style="color: #718096; margin: 5px 0 0 0; font-size: 1.1rem;">Gestion des demandes de crédit</p>
                 </div>
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <button onclick="exportCredits()" style="background: #48bb78; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                    <a href="{{ route('gestionnaire.credits.export') }}" style="background: #48bb78; color: white; border: none; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s; display: inline-block;">
                         Exporter
-                    </button>
-                    <button onclick="refreshData()" style="background: #4299e1; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                    </a>
+                    <a href="{{ route('gestionnaire.credits.index') }}" style="background: #4299e1; color: white; border: none; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s; display: inline-block;">
                         Actualiser
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -248,9 +119,8 @@
                     <button type="submit" style="background: #4299e1; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1;">
                         Filtrer
                     </button>
-                    <a href="#" style="background: #a0aec0; color: white; border: none; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 600;">
+                    <a href="{{ route('gestionnaire.credits.index') }}" style="background: #a0aec0; color: white; border: none; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 600; display: inline-block;">
                         Reset
-                        
                     </a>
                 </div>
             </form>
@@ -318,20 +188,20 @@
                             <td style="padding: 15px;">
                                 <div style="display: flex; gap: 5px; flex-wrap: wrap;">
                                     @if($credit->demande_manuscrite)
-                                    <button onclick="showDocument('{{ asset('storage/' . $credit->demande_manuscrite) }}', 'Demande Manuscrite')" 
-                                        style="background: #4299e1; color: white; border: none; padding: 5px 8px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">DOC</button>
+                                    <a href="#" target="_blank"
+                                        style="background: #4299e1; color: white; border: none; padding: 5px 8px; border-radius: 5px; text-decoration: none; font-size: 0.8rem;">DOC</a>
                                     @endif
                                     @if($credit->photocopie_cni)
-                                    <button onclick="showDocument('{{ asset('storage/' . $credit->photocopie_cni) }}', 'CNI')" 
-                                        style="background: #48bb78; color: white; border: none; padding: 5px 8px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">CNI</button>
+                                    <a href="#" target="_blank"
+                                        style="background: #48bb78; color: white; border: none; padding: 5px 8px; border-radius: 5px; text-decoration: none; font-size: 0.8rem;">CNI</a>
                                     @endif
                                     @if($credit->plan_localisation)
-                                    <button onclick="showDocument('{{ asset('storage/' . $credit->plan_localisation) }}', 'Plan')" 
-                                        style="background: #ed8936; color: white; border: none; padding: 5px 8px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">PLAN</button>
+                                    <a href="#" target="_blank"
+                                        style="background: #ed8936; color: white; border: none; padding: 5px 8px; border-radius: 5px; text-decoration: none; font-size: 0.8rem;">PLAN</a>
                                     @endif
                                     @if($credit->justificatifs_financiers)
-                                    <button onclick="showDocument('{{ asset('storage/' . $credit->justificatifs_financiers) }}', 'Justificatifs')" 
-                                        style="background: #9f7aea; color: white; border: none; padding: 5px 8px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">FIN</button>
+                                    <a href="#" target="_blank"
+                                        style="background: #9f7aea; color: white; border: none; padding: 5px 8px; border-radius: 5px; text-decoration: none; font-size: 0.8rem;">FIN</a>
                                     @endif
                                 </div>
                             </td>
@@ -401,30 +271,31 @@
                             <td style="padding: 15px; text-align: center;">
                                 <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
                                     @if($credit->status == 'en_attente')
-                                    <button onclick="traiterCredit({{ $credit->id }})"
-                                        style="background: #48bb78; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+                                    <a href="{{ route('gestionnaire.credits.traiter', $credit->id) }}"
+                                        style="background: #48bb78; color: white; border: none; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block;">
                                         Traiter
-                                    </button>
+                                    </a>
                                     @endif
 
                                     @if(in_array($credit->status, ['approuve', 'debourse']))
-                                    <button onclick="deboursCredit({{ $credit->id }})"
-                                        style="background: #4299e1; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+                                    <a href="{{ route('gestionnaire.credits.debourser', $credit->id) }}"
+                                        onclick="return confirm('Confirmer le débours de ce crédit ?')"
+                                        style="background: #4299e1; color: white; border: none; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block;">
                                         Débourser
-                                    </button>
+                                    </a>
                                     @endif
 
                                     @if(in_array($credit->status, ['debourse', 'en_remboursement', 'en_retard']))
-                                    <button onclick="remboursCredit({{ $credit->id }})"
-                                        style="background: #9f7aea; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+                                    <a href="{{ route('gestionnaire.credits.rembourser', $credit->id) }}"
+                                        style="background: #9f7aea; color: white; border: none; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block;">
                                         Rembours.
-                                    </button>
+                                    </a>
                                     @endif
 
-                                    <button onclick="voirDetailsCredit({{ $credit->id }})"
-                                        style="background: #ed8936; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+                                    <a href="{{ route('gestionnaire.credits.details', $credit->id) }}"
+                                        style="background: #ed8936; color: white; border: none; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block;">
                                         Détails
-                                    </button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -450,311 +321,6 @@
         </div>
     </div>
 @endif
-
-<script>
-    let currentDocumentUrl = '';
-    let creditToProcess = null;
-    let creditToRemboursement = null;
-
-    // Fonctions pour les modals
-    function showDocument(documentUrl, title) {
-        document.getElementById('documentImage').src = documentUrl;
-        document.getElementById('documentTitle').textContent = title;
-        document.getElementById('documentModal').style.display = 'flex';
-        currentDocumentUrl = documentUrl;
-    }
-
-    function closeDocumentModal() {
-        document.getElementById('documentModal').style.display = 'none';
-    }
-
-    function downloadDocument() {
-        const link = document.createElement('a');
-        link.href = currentDocumentUrl;
-        link.download = document.getElementById('documentTitle').textContent + '.pdf';
-        link.click();
-    }
-
-    function closeTraitementModal() {
-        document.getElementById('traitementModal').style.display = 'none';
-        document.getElementById('decisionSelect').value = '';
-        document.getElementById('motifRejet').value = '';
-        document.getElementById('observations').value = '';
-        document.getElementById('motifRejetDiv').style.display = 'none';
-        creditToProcess = null;
-    }
-
-    function closeRemboursementModal() {
-        document.getElementById('remboursementModal').style.display = 'none';
-        document.getElementById('montantRemboursement').value = '';
-        document.getElementById('typeRemboursement').value = 'partiel';
-        document.getElementById('notesRemboursement').value = '';
-        creditToRemboursement = null;
-    }
-
-    function closeDetailsModal() {
-        document.getElementById('detailsModal').style.display = 'none';
-    }
-
-    function toggleDecisionFields() {
-        const select = document.getElementById('decisionSelect');
-        const motifDiv = document.getElementById('motifRejetDiv');
-        
-        if (select.value === 'rejete') {
-            motifDiv.style.display = 'block';
-        } else {
-            motifDiv.style.display = 'none';
-        }
-    }
-
-    // Fonctions principales
-    function traiterCredit(id) {
-        creditToProcess = id;
-        document.getElementById('traitementModal').style.display = 'flex';
-    }
-
-    function confirmerTraitement() {
-        const decision = document.getElementById('decisionSelect').value;
-        const motifRejet = document.getElementById('motifRejet').value;
-        const observations = document.getElementById('observations').value;
-
-        if (!decision) {
-            alert('Veuillez sélectionner une décision');
-            return;
-        }
-
-        if (decision === 'rejete' && !motifRejet.trim()) {
-            alert('Veuillez saisir le motif de rejet');
-            return;
-        }
-
-        const button = event.target;
-        const originalText = button.innerHTML;
-        button.innerHTML = 'Traitement...';
-        button.disabled = true;
-
-        fetch(`/gestionnaire/credits/${creditToProcess}/traiter`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                decision: decision,
-                motif_rejet: motifRejet,
-                observations: observations
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                closeTraitementModal();
-                location.reload();
-            } else {
-                alert('Erreur: ' + (data.message || 'Erreur lors du traitement'));
-                button.innerHTML = originalText;
-                button.disabled = false;
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Erreur de connexion');
-            button.innerHTML = originalText;
-            button.disabled = false;
-        });
-    }
-
-    function deboursCredit(id) {
-        if (confirm('Confirmer le débours de ce crédit ?')) {
-            const button = event.target;
-            const originalText = button.innerHTML;
-            button.innerHTML = 'Débours...';
-            button.disabled = true;
-
-            fetch(`/gestionnaire/credits/${id}/debourser`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-                    location.reload();
-                } else {
-                    alert('Erreur: ' + (data.message || 'Erreur lors du débours'));
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                }
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
-                alert('Erreur de connexion');
-                button.innerHTML = originalText;
-                button.disabled = false;
-            });
-        }
-    }
-
-    function remboursCredit(id) {
-        creditToRemboursement = id;
-        document.getElementById('remboursementModal').style.display = 'flex';
-    }
-
-    function confirmerRemboursement() {
-        const montant = document.getElementById('montantRemboursement').value;
-        const type = document.getElementById('typeRemboursement').value;
-        const notes = document.getElementById('notesRemboursement').value;
-
-        if (!montant || montant <= 0) {
-            alert('Veuillez saisir un montant valide');
-            return;
-        }
-
-        const button = event.target;
-        const originalText = button.innerHTML;
-        button.innerHTML = 'Enregistrement...';
-        button.disabled = true;
-
-        fetch(`/gestionnaire/credits/${creditToRemboursement}/rembourser`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                montant: parseFloat(montant),
-                type: type,
-                notes: notes
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                closeRemboursementModal();
-                location.reload();
-            } else {
-                alert('Erreur: ' + (data.message || 'Erreur lors de l\'enregistrement'));
-                button.innerHTML = originalText;
-                button.disabled = false;
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Erreur de connexion');
-            button.innerHTML = originalText;
-            button.disabled = false;
-        });
-    }
-
-    function voirDetailsCredit(id) {
-        fetch(`/gestionnaire/credits/${id}/details`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const credit = data.credit;
-                const detailsContent = document.getElementById('detailsContent');
-                
-                detailsContent.innerHTML = `
-                    <div>
-                        <h4 style="margin: 0 0 10px 0; color: #2d3748;">Informations Client</h4>
-                        <p><strong>Nom:</strong> ${credit.compte?.nom || 'N/A'} ${credit.compte?.prenom || ''}</p>
-                        <p><strong>CNI:</strong> ${credit.compte?.cni || 'N/A'}</p>
-                        <p><strong>Téléphone:</strong> ${credit.compte?.telephone || 'N/A'}</p>
-                        <p><strong>Statut professionnel:</strong> ${credit.statut_professionnel || 'N/A'}</p>
-                        <p><strong>Situation familiale:</strong> ${credit.situation_familiale || 'N/A'}</p>
-                        <p><strong>Revenus mensuels:</strong> ${credit.revenus_mensuels ? Number(credit.revenus_mensuels).toLocaleString() + ' FCFA' : 'N/A'}</p>
-                        <p><strong>Personnes à charge:</strong> ${credit.personnes_charge || 0}</p>
-                    </div>
-                    <div>
-                        <h4 style="margin: 0 0 10px 0; color: #2d3748;">Détails du Crédit</h4>
-                        <p><strong>Montant demandé:</strong> ${Number(credit.montant).toLocaleString()} FCFA</p>
-                        <p><strong>Durée:</strong> ${credit.duree} mois</p>
-                        <p><strong>Taux d'intérêt:</strong> ${credit.taux_interet}%</p>
-                        <p><strong>Montant total à rembourser:</strong> ${Number(credit.montant_total_rembourser).toLocaleString()} FCFA</p>
-                        <p><strong>Montant mensuel:</strong> ${Number(credit.montant_mensuel).toLocaleString()} FCFA</p>
-                        <p><strong>Épargne requise:</strong> ${Number(credit.montant_epargne_requis).toLocaleString()} FCFA</p>
-                        <p><strong>Objet:</strong> ${credit.objet_credit || 'N/A'}</p>
-                        <p><strong>Garanties:</strong> ${credit.garanties || 'N/A'}</p>
-                    </div>
-                    <div style="grid-column: 1 / -1;">
-                        <h4 style="margin: 20px 0 10px 0; color: #2d3748;">Avalistes</h4>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div>
-                                <h5 style="margin: 0 0 5px 0; color: #4a5568;">Avaliste 1</h5>
-                                <p><strong>Nom:</strong> ${credit.avaliste1_nom}</p>
-                                <p><strong>Téléphone:</strong> ${credit.avaliste1_telephone}</p>
-                                <p><strong>CNI:</strong> ${credit.avaliste1_cni}</p>
-                            </div>
-                            <div>
-                                <h5 style="margin: 0 0 5px 0; color: #4a5568;">Avaliste 2</h5>
-                                <p><strong>Nom:</strong> ${credit.avaliste2_nom}</p>
-                                <p><strong>Téléphone:</strong> ${credit.avaliste2_telephone}</p>
-                                <p><strong>CNI:</strong> ${credit.avaliste2_cni}</p>
-                            </div>
-                        </div>
-                    </div>
-                    ${credit.observations ? `
-                    <div style="grid-column: 1 / -1;">
-                        <h4 style="margin: 20px 0 10px 0; color: #2d3748;">Observations</h4>
-                        <p style="background: #f7fafc; padding: 15px; border-radius: 8px;">${credit.observations}</p>
-                    </div>
-                    ` : ''}
-                `;
-                
-                document.getElementById('detailsModal').style.display = 'flex';
-            } else {
-                alert('Erreur lors du chargement des détails');
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Erreur de connexion');
-        });
-    }
-
-    function exportCredits() {
-        window.location.href = '/gestionnaire/credits/export';
-    }
-
-    function refreshData() {
-        location.reload();
-    }
-
-    // Fermer les modals en cliquant à l'extérieur
-    document.getElementById('documentModal').addEventListener('click', function(e) {
-        if (e.target === this) closeDocumentModal();
-    });
-
-    document.getElementById('traitementModal').addEventListener('click', function(e) {
-        if (e.target === this) closeTraitementModal();
-    });
-
-    document.getElementById('remboursementModal').addEventListener('click', function(e) {
-        if (e.target === this) closeRemboursementModal();
-    });
-
-    document.getElementById('detailsModal').addEventListener('click', function(e) {
-        if (e.target === this) closeDetailsModal();
-    });
-
-    // Fermer les modals avec Escape
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeDocumentModal();
-            closeTraitementModal();
-            closeRemboursementModal();
-            closeDetailsModal();
-        }
-    });
-</script>
 
 </section>
 @endsection

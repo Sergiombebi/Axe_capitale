@@ -116,4 +116,9 @@ class User extends Authenticatable
         
         return $compteEpargne->solde >= $montantRequis;
     }
+    public function credits()
+    {
+        return $this->hasMany(Credit::class, 'compte_id');
+    }
+   
 }
