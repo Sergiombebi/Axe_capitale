@@ -46,28 +46,32 @@ class Compte extends Model
     {
         return $this->hasMany(Credit::class);
     }
-   protected static function boot()
-    {
-        parent::boot();
+    protected static function boot()
+{
+    parent::boot();
 
-        static::creating(function ($compte) {
+    static::creating(function ($compte) {
 
-            // --- Numéro de compte ---
-            $telInverse = strrev($compte->telephone);
-            $compte->numero_compte = 'AXC01' . $telInverse;
+        // --- Numéro de compte ---
+        // Récupérer le dernier ID inséré et ajouter +1
+        $lastId = Compte::max('id') ?? 0;
+        $increment = str_pad($lastId + 1, 2, '0', STR_PAD_LEFT); // 01, 02, 03...
 
-            // --- Code secret 4 chiffres ---
-            do {
-                $plainCode = mt_rand(1000, 9999);
-            } while (Compte::where('code_secret', Hash::make($plainCode))->exists());
+        // Téléphone inversé
+        $telInverse = strrev($compte->telephone);
 
-            // --- Stockage hashé ---
-            $compte->code_secret = Hash::make($plainCode);
+        // Génération du numéro de compte
+        $compte->numero_compte = 'AXC' . $increment . $telInverse;
 
-            // --- Stockage visible pour l’utilisateur ---
-            $compte->code_secret = $plainCode;
-        });
-    }
+        // --- Code secret 4 chiffres ---
+        $plainCode = mt_rand(1000, 9999);
 
-    
+        // Stockage hashé en base
+        $compte->code_secret = Hash::make($plainCode);
+
+        // Si tu veux garder le code en clair pour l’utilisateur → crée une autre colonne
+        $compte->code_secret_visible = $plainCode;
+    });
+}
+
 }

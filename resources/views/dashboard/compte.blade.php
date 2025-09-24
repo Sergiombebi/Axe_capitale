@@ -105,7 +105,7 @@
                         style="font-weight: 700; color: #1d4ed8; filter: blur(6px); transition: filter 0.3s; cursor: pointer;"
                         onmouseover="this.style.filter='none'"
                         onmouseout="this.style.filter='blur(6px)'">
-                        {{ $compte->code_secret ?? 'XXXX' }}
+                        {{ $compte->code_secret_visible ?? 'XXXX' }}
                     </span>
                 </p>
 

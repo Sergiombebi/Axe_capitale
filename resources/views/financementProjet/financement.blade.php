@@ -55,7 +55,7 @@
             </div>
             @endif
 
-            <form method="POST" action="#" enctype="multipart/form-data">
+            <form method="POST" action="{{route('projet.store')}}" enctype="multipart/form-data">
                 @csrf
 
                 {{-- Informations sur le projet --}}
