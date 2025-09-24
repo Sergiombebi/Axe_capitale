@@ -7,11 +7,29 @@
         {{-- Header --}}
         <div style="background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center;">
             <h1 style="color: #2d3748; margin: 0 0 10px 0; font-size: 2.2rem; font-weight: 700;">Financement de Projet</h1>
-            <p style="color: #718096; margin: 0; font-size: 1.1rem; line-height: 1.6;">
+            <p style="color: #718096; margin: 0 0 20px 0; font-size: 1.1rem; line-height: 1.6;">
                 Réalisez vos rêves entrepreneuriaux avec AXE CAPITAL.<br>
                 Nous accompagnons les jeunes camerounais dans le financement de leurs projets innovants.
             </p>
+
+            {{-- Bouton visible uniquement si l'utilisateur a déjà une demande --}}
+            @if(auth()->check())
+            @php
+            $compte = \App\Models\Compte::where('user_id', auth()->id())->first();
+            $hasProjet = $compte
+            ? \App\Models\FinancementProjet::where('compte_id', $compte->id)->exists()
+            : false;
+            @endphp
+
+            @if($hasProjet)
+            <a href="{{ route('projet.status', $compte->financementProjet->id ?? 0) }}"
+                style="background: #4299e1; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                📊 Suivre mon projet
+            </a>
+            @endif
+            @endif
         </div>
+
 
         {{-- Information sur le processus --}}
         <div style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white; border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
@@ -61,7 +79,7 @@
                 {{-- Informations sur le projet --}}
                 <div style="background: #f7fafc; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
                     <h3 style="color: #2d3748; margin: 0 0 20px 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Informations sur le Projet</h3>
-                    
+
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                         <div>
                             <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
@@ -94,7 +112,7 @@
                         <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
                             Description du projet *
                         </label>
-                        <textarea name="description_projet" required placeholder="Décrivez votre projet en détail..." 
+                        <textarea name="description_projet" required placeholder="Décrivez votre projet en détail..."
                             style="width: 100%; min-height: 120px; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; resize: vertical; font-family: inherit;">{{ old('description_projet') }}</textarea>
                     </div>
 
@@ -121,7 +139,7 @@
                 {{-- Apport personnel --}}
                 <div style="background: #f7fafc; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
                     <h3 style="color: #2d3748; margin: 0 0 20px 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Apport Personnel</h3>
-                    
+
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                         <div>
                             <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
@@ -158,13 +176,13 @@
                 {{-- Documents requis --}}
                 <div style="background: #f7fafc; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
                     <h3 style="color: #2d3748; margin: 0 0 20px 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Documents Requis</h3>
-                    
+
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                         <div>
                             <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
                                 Business Plan (PDF) *
                             </label>
-                            <input type="file" name="business_plan" required accept=".pdf,.doc,.docx"
+                            <input type="file" name="business_plan" required
                                 style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
                             <small style="color: #718096;">Formats acceptés : PDF, DOC, DOCX (Max: 5MB)</small>
                         </div>
@@ -201,7 +219,7 @@
                 {{-- Informations complémentaires --}}
                 <div style="background: #f7fafc; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
                     <h3 style="color: #2d3748; margin: 0 0 20px 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Informations Complémentaires</h3>
-                    
+
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                         <div>
                             <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
@@ -269,7 +287,7 @@
                         <li>L'approbation du financement dépend de l'évaluation de votre business plan.</li>
                         <li>Les frais d'étude de 5,000 FCFA sont non remboursables.</li>
                     </ul>
-                    
+
                     <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 8px; margin-top: 15px;">
                         <label style="display: flex; align-items: center; font-weight: 600; color: #742a2a;">
                             <input type="checkbox" name="accepte_conditions" value="1" required style="margin-right: 10px; transform: scale(1.2);">
@@ -280,11 +298,11 @@
 
                 {{-- Boutons de soumission --}}
                 <div style="display: flex; gap: 20px; justify-content: center; margin-top: 30px;">
-                    <a href="#" 
+                    <a href="#"
                         style="background: #a0aec0; color: white; padding: 15px 40px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 1.1rem;">
                         Annuler
                     </a>
-                    <button type="submit" 
+                    <button type="submit"
                         style="background: linear-gradient(135deg, #48bb78, #38a169); color: white; border: none; padding: 15px 40px; border-radius: 25px; cursor: pointer; font-weight: 600; font-size: 1.1rem; transition: all 0.3s;">
                         Soumettre la Demande
                     </button>

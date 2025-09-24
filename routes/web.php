@@ -89,7 +89,21 @@ Route::get('/financement', [FinancementProjetController::class, 'financement'])-
 Route::post('/projet/demande', [FinancementProjetController::class, 'store'])->name('projet.store');
 Route::get('/projet/{financementProjet}/success', [FinancementProjetController::class, 'success'])->name('projet.success');
 Route::get('/projet/status', [FinancementProjetController::class, 'status'])->name('projet.status');
-
+Route::get('/projet/dashboard', [FinancementProjetController::class, 'dashboard'])->name('projet.dashboard');
+Route::get('/details/{projet}', [FinancementProjetController::class, 'details'])->name('details');
+Route::get('/confirmer-paiement/{projet}', [FinancementProjetController::class, 'confirmerPaiement']) ->name('confirmer_paiement');
+Route::post('/confirmer-paiement/{projet}', [FinancementProjetController::class, 'validerPaiement'])->name('valider_paiement');
+Route::get('/etudier/{projet}', [FinancementProjetController::class, 'etudier'])->name('etudier');
+Route::post('/etudier/{projet}', [FinancementProjetController::class, 'marquerEnEtude'])->name('marquer_en_etude');
+Route::get('/evaluer/{projet}', [FinancementProjetController::class, 'evaluer'])->name('evaluer');
+Route::post('/evaluer/{projet}', [FinancementProjetController::class, 'prendreDecision'])->name('prendre_decision');
+Route::get('/financer/{projet}', [FinancementProjetController::class, 'financer'])->name('financer');
+Route::post('/financer/{projet}', [FinancementProjetController::class, 'accorderFinancement'])->name('accorder_financement');
+Route::get('/suivi/{projet}', [FinancementProjetController::class, 'suivi'])->name('suivie');
+Route::post('/suivi/{projet}', [FinancementProjetController::class, 'mettreAJourSuivi'])->name('mettre_a_jour_suivi');
+Route::get('/details/{projet}', [FinancementProjetController::class, 'details'])->name('detailes');
+Route::get('/export', [FinancementProjetController::class, 'export'])->name('export');
+Route::get('/rapport/{projet}', [FinancementProjetController::class, 'genererRapport'])->name('generer_rapport');
 
 
 //importation et exportation 

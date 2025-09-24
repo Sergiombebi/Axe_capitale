@@ -320,7 +320,7 @@
                 <div style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
                     <h3 style="margin: 0 0 15px 0; text-align: center;">Contact AXE CAPITAL</h3>
                     <div style="text-align: center;">
-                        <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">+237 6XX XXX XXX</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">+237 688 82 22 32</div>
                         <p style="margin: 0; font-size: 1rem; opacity: 0.9;">
                             Vous pouvez aussi nous contacter directement via WhatsApp pour des demandes urgentes
                         </p>
