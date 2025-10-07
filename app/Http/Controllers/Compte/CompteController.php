@@ -111,12 +111,12 @@ class CompteController extends Controller
     //gestionnaire de compte il valide les comptes des utilisateur et mets le solde a jour
     //fonction qui retourne le page de tableau de bord
 
-    public function dashboard(Request $request)
+    public function dashboardCompte(Request $request)
     {
         // Vérifier que l'utilisateur est gestionnaire de compte
-        // if (auth()->user()->role !== 'gestionnaire_compte') {
-        //     return view('dashboard.TableauBord');
-        // }
+       if (auth()->user()->role !== 'gestionnaire_compte') {
+            abort(403, 'Accès non autorisé');
+        }
 
         // Statistiques générales
         $totalComptes = Compte::count();

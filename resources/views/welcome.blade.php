@@ -2,7 +2,7 @@
 @section('content')
 
 <!-- Hero Section avec animation de particules -->
-<div style="position: relative; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); overflow: hidden;">
+<div style="position: relative; min-height: 100vh; background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); overflow: hidden;">
     <!-- Particules animées -->
     <div style="position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: 1;">
         <div style="position: absolute; width: 4px; height: 4px; background: rgba(255,255,255,0.8); border-radius: 50%; animation: float 6s ease-in-out infinite; top: 20%; left: 10%;"></div>
@@ -41,6 +41,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Section Services avec design moderne -->
 <div id="services" style="padding: 100px 20px; background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%); position: relative;">

@@ -117,7 +117,7 @@
 
                         @auth
                         @if(Auth::user()->role === 'gestionnaire_compte')
-                        <a href="{{route('dashboard')}}"
+                        <a href="{{route('dashboardCompte')}}"
                             class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200">
                             <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -127,7 +127,9 @@
                         </a>
                         @endif
                         @endauth
-                         @auth
+
+
+                        @auth
                         @if(Auth::user()->role === 'gest-financement')
                         <a href="{{route('projet.dashboard')}}"
                             class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200">
@@ -152,6 +154,7 @@
                         </a>
                         @endif
                         @endauth
+                        
                         @auth
                         @if(Auth::user()->role === 'gest-import')
                         <a href="{{route('dashboard.import')}}"
@@ -164,6 +167,19 @@
                         </a>
                         @endif
                         @endauth
+                        @auth
+                        @if(Auth::user()->role === 'admin')
+                        <a href="{{route('dashboard')}}"
+                            class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200">
+                            <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            Tableau de bord
+                        </a>
+                        @endif
+                        @endauth
+                        
 
 
                         <a href="{{route('create.account')}}" class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200">

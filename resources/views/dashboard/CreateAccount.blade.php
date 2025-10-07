@@ -95,8 +95,15 @@
             </div>
             <div class="space-y-2">
                 <label class="block text-sm font-medium text-gray-700">Date de naissance</label>
-                <input type="date" name="date_naissance" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
+                <input
+                    type="date"
+                    name="date_naissance"
+                    value="2002-01-01"
+                    max="{{ date('Y') }}-12-31"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    required>
             </div>
+
             <div class="space-y-2">
                 <label class="block text-sm font-medium text-gray-700">Lieu de naissance</label>
                 <input type="text" name="lieu_naissance" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
@@ -161,8 +168,14 @@
             </div>
             <div class="space-y-2">
                 <label class="block text-sm font-medium text-gray-700">Fait le</label>
-                <input type="date" name="fait_le" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
+                <input
+                    type="date"
+                    name="fait_le"
+                    value="{{ date('Y-m-d') }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    required>
             </div>
+
             <div class="space-y-2">
                 <label class="block text-sm font-medium text-gray-700">À (lieu)</label>
                 <input type="text" name="fait_a" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>

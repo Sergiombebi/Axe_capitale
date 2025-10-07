@@ -465,6 +465,54 @@
                     </p>
                 </div>
             </div>
+            <div style="background: white; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden;">
+
+                <!-- Titre -->
+                <div style="background: linear-gradient(90deg, #fae8ff 0%, #fce7f3 100%); padding: 1.5rem; border-bottom: 1px solid #a855f7;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; display: flex; align-items: center; margin: 0;">
+                        <div style="width: 2rem; height: 2rem; background: #a855f7; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem;">
+                            <svg style="width: 1.25rem; height: 1.25rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        Gestion du compte
+                    </h3>
+                </div>
+
+                <!-- Informations du compte -->
+                <div style="padding: 1.5rem; text-align: center;">
+                    <p style="font-size: 1.25rem; font-weight: 500; color: #6b21a8; margin: 0.5rem 0;">
+                        {{ $compte->nom }} {{ $compte->prenom }}
+                    </p>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: #6b21a8; margin: 0.5rem 0;">
+                        {{ number_format($compte->solde, 0, ',', ' ') }} FCFA
+                    </p>
+                    <p style="font-size: 1rem; font-weight: 400; color: #1f2937; margin: 0.5rem 0;">
+                        Numéro de compte : {{ $compte->numero_compte }}
+                    </p>
+                    <p style="font-size: 1rem; font-weight: 400; color: #1f2937; margin: 0.5rem 0;">
+                        Type de compte : {{ ucfirst($compte->type_compte) }}
+                    </p>
+                </div>
+
+                <!-- Boutons Dépôt et Retrait -->
+                <div style="display: flex; justify-content: center; gap: 1rem; padding: 1rem;">
+                    <!-- Dépôt -->
+                    <a href="https://wa.me/237688822232?text={{ urlencode('Bonjour, je souhaite faire un dépôt sur mon compte '.$compte->numero_compte.' ('.$compte->type_compte.')') }}"
+                        target="_blank"
+                        style="background: #a855f7; color: white; padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 600; text-decoration: none; display: inline-block;">
+                        Dépôt
+                    </a>
+
+                    <!-- Retrait -->
+                    <a href="https://wa.me/237688822232?text={{ urlencode('Bonjour, je souhaite faire un retrait de mon compte '.$compte->numero_compte.' ('.$compte->type_compte.')') }}"
+                        target="_blank"
+                        style="background: #f43f5e; color: white; padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 600; text-decoration: none; display: inline-block;">
+                        Retrait
+                    </a>
+                </div>
+            </div>
+
 
             <!-- bloc autre compte -->
 

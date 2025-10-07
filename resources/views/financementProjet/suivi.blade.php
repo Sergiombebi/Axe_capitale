@@ -6,7 +6,7 @@
 
         {{-- Header --}}
         <div style="background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <div>
                     <h1 style="color: #2d3748; margin: 0; font-size: 1.8rem; font-weight: 700;">Suivi du Projet Financé</h1>
                     <p style="color: #718096; margin: 5px 0 0 0;">{{ $projet->nom_projet }} - FP-{{ str_pad($projet->id, 6, '0', STR_PAD_LEFT) }}</p>
@@ -117,7 +117,7 @@
                         @endphp
 
                         @forelse($paiements as $paiement)
-                        <div style="display: flex; justify-content: between; align-items: center; padding: 15px; background: #f7fafc; border-radius: 8px; border-left: 4px solid {{ $paiement['statut'] === 'recu' ? '#10b981' : '#f59e0b' }};">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f7fafc; border-radius: 8px; border-left: 4px solid {{ $paiement['statut'] === 'recu' ? '#10b981' : '#f59e0b' }};">
                             <div style="flex: 1;">
                                 <div style="font-weight: 600; color: #2d3748; margin-bottom: 3px;">
                                     Remboursement {{ $paiement['type'] === 'remboursement_partiel' ? 'partiel' : 'mensuel' }}
@@ -176,7 +176,7 @@
             <div>
                 {{-- Informations du projet --}}
                 <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                    <h3 style="color: #2d3748; margin: 0 0 20px 0;">Informations du Projet</h3>
+                    <h3 style="color: #2d3748; margin: 0 0 20px 0;">Client</h3>
                     
                     <div style="text-align: center; margin-bottom: 20px;">
                         <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #4299e1, #3182ce); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; color: white; font-size: 1.5rem; font-weight: 700;">
@@ -188,21 +188,31 @@
 
                     <div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                         <div style="display: grid; gap: 8px; font-size: 0.9rem;">
-                            <div style="display: flex; justify-content: between;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #718096;">Expérience</span>
+                                <span style="color: #2d3748; font-weight: 600; text-transform: capitalize;">
+                                    {{ str_replace('_', ' ', $projet->experience_domaine ?? 'Non spécifié') }}
+                                </span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
                                 <span style="color: #718096;">Secteur</span>
                                 <span style="color: #2d3748; font-weight: 600; text-transform: capitalize;">{{ ucfirst($projet->secteur_activite) }}</span>
                             </div>
-                            <div style="display: flex; justify-content: between;">
+                            <div style="display: flex; justify-content: space-between;">
                                 <span style="color: #718096;">Durée accordée</span>
                                 <span style="color: #2d3748; font-weight: 600;">{{ $projet->duree_remboursement_accordee }} mois</span>
                             </div>
-                            <div style="display: flex; justify-content: between;">
+                            <div style="display: flex; justify-content: space-between;">
                                 <span style="color: #718096;">Taux d'intérêt</span>
                                 <span style="color: #2d3748; font-weight: 600;">{{ $projet->ratio_remboursement }}%</span>
                             </div>
-                            <div style="display: flex; justify-content: between;">
+                            <div style="display: flex; justify-content: space-between;">
                                 <span style="color: #718096;">Emplois prévus</span>
                                 <span style="color: #2d3748; font-weight: 600;">{{ $projet->employes_prevus ?? 'Non spécifié' }}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #718096;">Demande créée</span>
+                                <span style="color: #2d3748; font-weight: 600;">{{ $projet->created_at->format('d/m/Y') }}</span>
                             </div>
                         </div>
                     </div>
@@ -216,7 +226,7 @@
                 </div>
 
                 {{-- Formulaire de mise à jour --}}
-                <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
                     <h3 style="color: #2d3748; margin: 0 0 20px 0;">Mise à Jour du Suivi</h3>
                     
                     <form method="POST" action="{{ route('mettre_a_jour_suivi', $projet->id) }}">
@@ -242,27 +252,95 @@
                             <input type="number" name="montant_rembourse" value="{{ $projet->montant_rembourse }}" 
                                 min="0" max="{{ $projet->montant_finance * 1.2 }}" step="1000"
                                 style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                            <div style="color: #718096; font-size: 0.85rem; margin-top: 6px;">
-                                Saisissez le montant total déjà remboursé par le porteur du projet.
+                            <div style="color: #718096; font-size: 0.8rem; margin-top: 5px;">
+                                Montant maximum: {{ number_format($projet->montant_finance * 1.2, 0, ',', ' ') }} FCFA
                             </div>
                         </div>
 
                         <div style="margin-bottom: 20px;">
                             <label style="display: block; font-weight: 600; color: #2d3748; margin-bottom: 8px;">
-                                Observations / Notes
+                                Observations de suivi
                             </label>
-                            <textarea name="observations" rows="4"
-                                style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px;">{{ old('observations', $projet->observations) }}</textarea>
+                            <textarea name="observations_suivi" rows="4" placeholder="Notes sur l'évolution du projet, difficultés rencontrées, points positifs..."
+                                style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; resize: vertical;">{{ old('observations_suivi') }}</textarea>
                         </div>
 
-                        <div style="text-align: right;">
-                            <button type="submit" 
-                                style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: background 0.3s;">
-                                Mettre à jour
-                            </button>
-                        </div>
+                        <button type="submit" 
+                            style="width: 100%; background: #4299e1; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+                            Mettre à Jour le Suivi
+                        </button>
                     </form>
                 </div>
+
+                {{-- Actions rapides --}}
+                <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2d3748; margin: 0 0 15px 0;">Actions Rapides</h3>
+                    
+                    <div style="display: grid; gap: 10px;">
+                        <a href="#" 
+                            style="background: #48bb78; color: white; padding: 12px 15px; border-radius: 6px; text-decoration: none; text-align: center; font-weight: 600; font-size: 0.9rem;">
+                            Contacter le Client
+                        </a>
+                        
+                        <a href="{{ route('generer_rapport', $projet->id) }}" 
+                            style="background: #9f7aea; color: white; padding: 12px 15px; border-radius: 6px; text-decoration: none; text-align: center; font-weight: 600; font-size: 0.9rem;">
+                            Générer Rapport
+                        </a>
+                        
+                        <a href="#" 
+                            style="background: #ed8936; color: white; padding: 12px 15px; border-radius: 6px; text-decoration: none; text-align: center; font-weight: 600; font-size: 0.9rem;">
+                            Voir Historique Complet
+                        </a>
+                        
+                        <a href="{{ route('details', $projet->id) }}" 
+                            style="background: #4299e1; color: white; padding: 12px 15px; border-radius: 6px; text-decoration: none; text-align: center; font-weight: 600; font-size: 0.9rem;">
+                            Détails Complets
+                        </a>
+                    </div>
+                </div>
+
+                {{-- Alertes --}}
+                @php
+                $alertes = collect();
+                
+                // Vérification du retard de paiement
+                if($projet->date_debut_remboursement && $projet->date_debut_remboursement < now()) {
+                    $moisEcoules = \Carbon\Carbon::parse($projet->date_debut_remboursement)->diffInMonths(now());
+                    $montantAttendu = ($projet->montant_finance * (1 + $projet->ratio_remboursement/100)) / $projet->duree_remboursement_accordee * $moisEcoules;
+                    
+                    if($projet->montant_rembourse < $montantAttendu * 0.8) {
+                        $alertes->push([
+                            'type' => 'warning',
+                            'titre' => 'Retard de paiement détecté',
+                            'message' => 'Le montant remboursé est inférieur aux échéances prévues.'
+                        ]);
+                    }
+                }
+                
+                // Vérification de la fin de remboursement
+                if($projet->date_fin_remboursement && \Carbon\Carbon::parse($projet->date_fin_remboursement)->diffInDays(now(), false) < 30) {
+                    $alertes->push([
+                        'type' => 'info',
+                        'titre' => 'Fin de remboursement proche',
+                        'message' => 'Le remboursement se termine dans moins de 30 jours.'
+                    ]);
+                }
+                @endphp
+
+                @if($alertes->count() > 0)
+                <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2d3748; margin: 0 0 15px 0;">Alertes</h3>
+                    
+                    <div style="display: grid; gap: 10px;">
+                        @foreach($alertes as $alerte)
+                        <div style="padding: 12px; border-radius: 6px; {{ $alerte['type'] === 'warning' ? 'background: #fef3c7; color: #92400e; border-left: 4px solid #f59e0b;' : 'background: #dbeafe; color: #1e40af; border-left: 4px solid #4299e1;' }}">
+                            <div style="font-weight: 600; margin-bottom: 3px;">{{ $alerte['titre'] }}</div>
+                            <div style="font-size: 0.9rem;">{{ $alerte['message'] }}</div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
