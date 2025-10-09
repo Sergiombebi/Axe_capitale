@@ -149,5 +149,4 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/users/assign-role', [DashboardController::class, 'assignRole'])->name('users.assign-role');
     Route::delete('/users/{id}', [DashboardController::class, 'deleteUser'])->name('users.delete');
     Route::get('/export/global-report', [DashboardController::class, 'exportGlobalReport'])->name('export.global');
-
 });
