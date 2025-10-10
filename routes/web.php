@@ -35,13 +35,15 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
-//route pour la page de creation de compte
-Route::get('/create-account', [AccountController::class, 'index'])->name('create.account');
+
+
 
 Route::post('/compte/store', [CompteController::class, 'store'])->middleware('auth')->name('compte.store');
 Route::put('/compte/{id}', [CompteController::class, 'update'])->name('compte.update');
 // route pour le tableau de bord
 Route::middleware(['auth'])->group(function () {
+    //route pour la page de creation de compte
+    Route::get('/create-account', [AccountController::class, 'index'])->name('create.account');
 
     // Dashboard principal
     Route::get('/GestCompte', [CompteController::class, 'dashboardCompte'])->name('dashboardCompte');
