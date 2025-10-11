@@ -12,7 +12,7 @@
                     <h1 style="color: #2d3748; margin: 0; font-size: 1.8rem; font-weight: 700;">Traitement du Crédit</h1>
                     <p style="color: #718096; margin: 5px 0 0 0; font-size: 1rem;">Demande de {{ $credit->compte->nom }} {{ $credit->compte->prenom }}</p>
                 </div>
-                <a href="{{ route('gestionnaire.credits.index') }}" style="background: #a0aec0; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                <a href="{{ route('credit.dashboard') }}" style="background: #a0aec0; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600;">
                     Retour
                 </a>
             </div>

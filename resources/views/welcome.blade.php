@@ -47,7 +47,7 @@
 <div id="services" style="padding: 100px 20px; background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%); position: relative;">
     <!-- Motif de fond -->
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle at 25% 25%, rgba(102,126,234,0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(118,75,162,0.1) 0%, transparent 50%); z-index: 1;"></div>
-    
+
     <div style="max-width: 1400px; margin: 0 auto; position: relative; z-index: 2;">
         <!-- Titre de section -->
         <div style="text-align: center; margin-bottom: 80px;">
@@ -62,19 +62,19 @@
 
         <!-- Grille de services -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px;">
-            
+
             <!-- Service 1: Compte -->
             <div style="background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%); border-radius: 25px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); transition: all 0.4s ease; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-10px) rotateX(5deg)'; this.style.boxShadow='0 30px 80px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0) rotateX(0)'; this.style.boxShadow='0 20px 60px rgba(0,0,0,0.1)'">
                 <!-- Icône flottante -->
                 <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; opacity: 0.1; transform: rotate(15deg);"></div>
-                
+
                 <div style="display: flex; align-items: center; margin-bottom: 25px;">
                     <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 20px; font-size: 1.8rem; box-shadow: 0 10px 30px rgba(102,126,234,0.3);">
                         💳
                     </div>
                     <h3 style="font-size: 1.8rem; font-weight: 700; color: #2c3e50; margin: 0;">Ouverture de Compte</h3>
                 </div>
-                
+
                 <div style="background: linear-gradient(45deg, #667eea10, #764ba210); border-radius: 15px; padding: 25px; margin-bottom: 25px;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                         <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.7); border-radius: 10px;">
@@ -95,23 +95,27 @@
                         </div>
                     </div>
                 </div>
-                
-                <button onclick="openModal('compte')" style="width: 100%; background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(102,126,234,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(102,126,234,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(102,126,234,0.3)'">
+
+                <a href="{{ route('create.account') }}"
+                    style="display: inline-block; width: 100%; background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(102,126,234,0.3); text-align: center; text-decoration: none;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(102,126,234,0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(102,126,234,0.3)'">
                     Ouvrir un compte →
-                </button>
+                </a>
+
             </div>
 
             <!-- Service 2: Épargne -->
             <div style="background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%); border-radius: 25px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); transition: all 0.4s ease; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-10px) rotateX(5deg)'; this.style.boxShadow='0 30px 80px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0) rotateX(0)'; this.style.boxShadow='0 20px 60px rgba(0,0,0,0.1)'">
                 <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: linear-gradient(45deg, #27ae60, #2ecc71); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; opacity: 0.1; transform: rotate(15deg);"></div>
-                
+
                 <div style="display: flex; align-items: center; margin-bottom: 25px;">
                     <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #27ae60, #2ecc71); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 20px; font-size: 1.8rem; box-shadow: 0 10px 30px rgba(39,174,96,0.3);">
                         💰
                     </div>
                     <h3 style="font-size: 1.8rem; font-weight: 700; color: #2c3e50; margin: 0;">Épargne Intelligente</h3>
                 </div>
-                
+
                 <div style="space-y: 15px;">
                     <div style="display: flex; align-items: center; padding: 12px; background: rgba(39,174,96,0.1); border-radius: 10px; margin-bottom: 10px;">
                         <span style="margin-right: 15px; font-size: 1.2rem;">📱</span>
@@ -130,23 +134,33 @@
                         <span style="color: #2c3e50; font-weight: 500;">Suivi et motivation 3x/semaine</span>
                     </div>
                 </div>
-                
-                <button onclick="openModal('epargne')" style="width: 100%; background: linear-gradient(45deg, #27ae60, #2ecc71); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(39,174,96,0.3); margin-top: 25px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(39,174,96,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(39,174,96,0.3)'">
+                <button onclick="redirectToWhatsApp()"
+                    style="width: 100%; background: linear-gradient(45deg, #27ae60, #2ecc71); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(39,174,96,0.3); margin-top: 25px;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(39,174,96,0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(39,174,96,0.3)'">
                     Commencer à épargner →
                 </button>
+
+                <script>
+                    function redirectToWhatsApp() {
+                        // Lien vers le numéro WhatsApp (avec indicatif du Cameroun : 237)
+                        window.location.href = "https://wa.me/237688822232?text=Bonjour%2C%20j’aimerais%20commencer%20à%20épargner.";
+                    }
+                </script>
+
             </div>
 
             <!-- Service 3: Crédit -->
             <div style="background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%); border-radius: 25px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); transition: all 0.4s ease; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-10px) rotateX(5deg)'; this.style.boxShadow='0 30px 80px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0) rotateX(0)'; this.style.boxShadow='0 20px 60px rgba(0,0,0,0.1)'">
                 <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: linear-gradient(45deg, #3498db, #2980b9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; opacity: 0.1; transform: rotate(15deg);"></div>
-                
+
                 <div style="display: flex; align-items: center; margin-bottom: 25px;">
                     <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #3498db, #2980b9); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 20px; font-size: 1.8rem; box-shadow: 0 10px 30px rgba(52,152,219,0.3);">
                         🏦
                     </div>
                     <h3 style="font-size: 1.8rem; font-weight: 700; color: #2c3e50; margin: 0;">Crédit Rapide</h3>
                 </div>
-                
+
                 <div style="background: linear-gradient(45deg, #3498db10, #2980b910); border-radius: 15px; padding: 25px; margin-bottom: 25px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <span style="color: #2c3e50; font-weight: 600;">Taux d'intérêt</span>
@@ -165,35 +179,39 @@
                         <span style="color: #f39c12; font-weight: 800; font-size: 1.3rem;">1000 FCFA</span>
                     </div>
                 </div>
-                
+
                 <div style="background: rgba(52,152,219,0.1); border-radius: 10px; padding: 15px; margin-bottom: 25px; border-left: 4px solid #3498db;">
                     <p style="margin: 0; color: #2c3e50; font-size: 0.95rem; line-height: 1.5;">
                         <strong>Requis:</strong> Membre depuis 1 mois, 2 avalistes, garantie
                     </p>
                 </div>
-                
-                <button onclick="openModal('credit')" style="width: 100%; background: linear-gradient(45deg, #3498db, #2980b9); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(52,152,219,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(52,152,219,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(52,152,219,0.3)'">
+
+                <a href="{{route('credit')}}"
+                    style="display: inline-block; width: 100%; background: linear-gradient(45deg, #3498db, #2980b9); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(102,126,234,0.3); text-align: center; text-decoration: none;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(102,126,234,0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(102,126,234,0.3)'">
                     Demander un crédit →
-                </button>
+                </a>
+
             </div>
 
             <!-- Service 4: Projets -->
             <div style="background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%); border-radius: 25px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); transition: all 0.4s ease; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-10px) rotateX(5deg)'; this.style.boxShadow='0 30px 80px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0) rotateX(0)'; this.style.boxShadow='0 20px 60px rgba(0,0,0,0.1)'">
                 <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: linear-gradient(45deg, #e74c3c, #c0392b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; opacity: 0.1; transform: rotate(15deg);"></div>
-                
+
                 <div style="display: flex; align-items: center; margin-bottom: 25px;">
                     <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #e74c3c, #c0392b); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 20px; font-size: 1.8rem; box-shadow: 0 10px 30px rgba(231,76,60,0.3);">
                         🚀
                     </div>
                     <h3 style="font-size: 1.8rem; font-weight: 700; color: #2c3e50; margin: 0;">Financement Projets</h3>
                 </div>
-                
+
                 <div style="background: linear-gradient(45deg, #e74c3c10, #c0392b10); border-radius: 15px; padding: 25px; margin-bottom: 25px;">
                     <div style="text-align: center; margin-bottom: 20px;">
                         <div style="font-size: 2rem; font-weight: 800; color: #e74c3c; margin-bottom: 5px;">✨ Réalisez vos rêves</div>
                         <div style="font-size: 1rem; color: #6c757d;">Pour les jeunes entrepreneurs camerounais</div>
                     </div>
-                    
+
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                         <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.7); border-radius: 10px;">
                             <div style="font-size: 1.2rem; font-weight: 700; color: #2c3e50;">📋</div>
@@ -213,23 +231,28 @@
                         </div>
                     </div>
                 </div>
-                
-                <button onclick="openModal('projet')" style="width: 100%; background: linear-gradient(45deg, #e74c3c, #c0392b); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(231,76,60,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(231,76,60,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(231,76,60,0.3)'">
+
+                <a href="{{route('financement')}}"
+                    style="display: inline-block; width: 100%; background: linear-gradient(45deg, #e74c3c, #c0392b); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(102,126,234,0.3); text-align: center; text-decoration: none;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(102,126,234,0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(102,126,234,0.3)'">
                     Financer mon projet →
-                </button>
+                </a>
+
+
             </div>
 
             <!-- Service 5: Import/Export -->
             <div style="background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%); border-radius: 25px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); transition: all 0.4s ease; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-10px) rotateX(5deg)'; this.style.boxShadow='0 30px 80px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0) rotateX(0)'; this.style.boxShadow='0 20px 60px rgba(0,0,0,0.1)'">
                 <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: linear-gradient(45deg, #f39c12, #e67e22); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; opacity: 0.1; transform: rotate(15deg);"></div>
-                
+
                 <div style="display: flex; align-items: center; margin-bottom: 25px;">
                     <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #f39c12, #e67e22); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 20px; font-size: 1.8rem; box-shadow: 0 10px 30px rgba(243,156,18,0.3);">
                         🌍
                     </div>
                     <h3 style="font-size: 1.8rem; font-weight: 700; color: #2c3e50; margin: 0;">Import/Export Chine</h3>
                 </div>
-                
+
                 <div style="background: linear-gradient(45deg, #f39c1210, #e67e2210); border-radius: 15px; padding: 25px; margin-bottom: 25px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 12px; background: rgba(255,255,255,0.7); border-radius: 8px;">
                         <span style="color: #2c3e50; font-weight: 600;">🚢 Par bateau</span>
@@ -248,29 +271,33 @@
                         <span style="color: #3498db; font-weight: 800;">1000 FCFA/kg</span>
                     </div>
                 </div>
-                
-                <button onclick="openModal('import')" style="width: 100%; background: linear-gradient(45deg, #f39c12, #e67e22); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(243,156,18,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(243,156,18,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(243,156,18,0.3)'">
-                    Commander de Chine →
-                </button>
+
+                <a href="{{route('import.export')}}"
+                    style="display: inline-block; width: 100%; background: linear-gradient(45deg, #f39c12, #e67e22); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(102,126,234,0.3); text-align: center; text-decoration: none;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(102,126,234,0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(102,126,234,0.3)'">
+                    Financer mon projet →
+                </a>
+
             </div>
 
             <!-- Service 6: Intérêts -->
             <div style="background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%); border-radius: 25px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); transition: all 0.4s ease; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-10px) rotateX(5deg)'; this.style.boxShadow='0 30px 80px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0) rotateX(0)'; this.style.boxShadow='0 20px 60px rgba(0,0,0,0.1)'">
                 <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: linear-gradient(45deg, #9b59b6, #8e44ad); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; opacity: 0.1; transform: rotate(15deg);"></div>
-                
+
                 <div style="display: flex; align-items: center; margin-bottom: 25px;">
                     <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #9b59b6, #8e44ad); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 20px; font-size: 1.8rem; box-shadow: 0 10px 30px rgba(155,89,182,0.3);">
                         📈
                     </div>
                     <h3 style="font-size: 1.8rem; font-weight: 700; color: #2c3e50; margin: 0;">Intérêts sur Épargne</h3>
                 </div>
-                
+
                 <div style="background: linear-gradient(45deg, #9b59b610, #8e44ad10); border-radius: 15px; padding: 25px; margin-bottom: 25px; text-align: center;">
                     <div style="margin-bottom: 20px;">
                         <div style="font-size: 3rem; font-weight: 900; color: #9b59b6; margin-bottom: 10px;">5%</div>
                         <div style="font-size: 1.1rem; color: #6c757d;">d'intérêts sur les prêts</div>
                     </div>
-                    
+
                     <div style="background: rgba(255,255,255,0.8); border-radius: 12px; padding: 20px;">
                         <div style="font-size: 1.5rem; font-weight: 700; color: #2c3e50; margin-bottom: 10px;">💡 Comment ça marche ?</div>
                         <p style="color: #6c757d; font-size: 1rem; line-height: 1.6; margin: 0;">
@@ -280,10 +307,8 @@
                         </p>
                     </div>
                 </div>
-                
-                <button onclick="openModal('interets')" style="width: 100%; background: linear-gradient(45deg, #9b59b6, #8e44ad); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(155,89,182,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(155,89,182,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(155,89,182,0.3)'">
-                    Découvrir les intérêts →
-                </button>
+
+
             </div>
         </div>
     </div>
@@ -293,7 +318,7 @@
 <div style="padding: 100px 20px; background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); position: relative; overflow: hidden;">
     <!-- Effet de parallaxe -->
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 50%); z-index: 1;"></div>
-    
+
     <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 2;">
         <div style="text-align: center; margin-bottom: 60px;">
             <h2 style="font-size: 3rem; font-weight: 800; color: white; margin-bottom: 20px;">
@@ -347,9 +372,13 @@
 
         <!-- CTA Final -->
         <div style="text-align: center;">
-            <button onclick="openModal('compte')" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; padding: 20px 50px; border-radius: 50px; font-size: 1.3rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 15px 40px rgba(102,126,234,0.4); text-transform: uppercase; letter-spacing: 2px;" onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 20px 50px rgba(102,126,234,0.6)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 15px 40px rgba(102,126,234,0.4)'">
-                🎯 Ouvrir mon compte gratuitement
-            </button>
+            <a href="{{ route('create.account') }}"
+                style="display: inline-block; width: 100%; background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(102,126,234,0.3); text-align: center; text-decoration: none;"
+                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 35px rgba(102,126,234,0.4)'"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(102,126,234,0.3)'">
+                Ouvrir un compte →
+            </a>
+
             <p style="color: rgba(255,255,255,0.6); margin-top: 20px; font-size: 1rem;">
                 * Ouverture gratuite • Solde minimal 500 FCFA • Activation rapide
             </p>
@@ -371,18 +400,40 @@
 <!-- Styles et animations -->
 <style>
     @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
-        50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+            opacity: 0.8;
+        }
+
+        50% {
+            transform: translateY(-20px) rotate(180deg);
+            opacity: 1;
+        }
     }
-    
-    html { scroll-behavior: smooth; }
-    
+
+    html {
+        scroll-behavior: smooth;
+    }
+
     /* Responsive design */
     @media (max-width: 768px) {
-        h1 { font-size: 2.5rem !important; }
-        .services-grid { grid-template-columns: 1fr !important; }
-        h2 { font-size: 2rem !important; }
-        h3 { font-size: 1.5rem !important; }
+        h1 {
+            font-size: 2.5rem !important;
+        }
+
+        .services-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        h2 {
+            font-size: 2rem !important;
+        }
+
+        h3 {
+            font-size: 1.5rem !important;
+        }
     }
 </style>
 
