@@ -201,19 +201,33 @@
                         <tr style="border-bottom: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.backgroundColor='#f7fafc'" onmouseout="this.style.backgroundColor='white'">
                             <!-- Photo CNI -->
                             <td style="padding: 15px;">
-                                @if($compte->photo_cni && file_exists(storage_path('app/public/' . $compte->photo_cni)))
-                                <img src="{{ asset('storage/' . $compte->photo_cni) }}"
-                                    onclick="showImageModal('{{ asset('storage/' . $compte->photo_cni) }}', '{{ $compte->nom }} {{ $compte->prenom }}')"
+                                @php
+                                // Récupère la valeur JSON ou unique selon le format
+                                $photos = is_array($compte->photo_cni)
+                                ? $compte->photo_cni
+                                : (json_decode($compte->photo_cni, true) ?: [$compte->photo_cni]);
+                                @endphp
 
-                                    style="width: 60px; height: 40px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid #e2e8f0; transition: all 0.3s;"
-                                    onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"
-                                    alt="CNI de {{ $compte->nom }} {{ $compte->prenom }}">
+                                @if (!empty($photos) && $photos[0] !== null)
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    @foreach ($photos as $photo)
+                                    @if ($photo && file_exists(storage_path('app/public/' . $photo)))
+                                    <img src="{{ asset('storage/' . $photo) }}"
+                                        onclick="showImageModal('{{ asset('storage/' . $photo) }}', '{{ $compte->nom }} {{ $compte->prenom }}')"
+                                        style="width: 60px; height: 40px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid #e2e8f0; transition: all 0.3s;"
+                                        onmouseover="this.style.transform='scale(1.1)'"
+                                        onmouseout="this.style.transform='scale(1)'"
+                                        alt="CNI de {{ $compte->nom }} {{ $compte->prenom }}">
+                                    @endif
+                                    @endforeach
+                                </div>
                                 @else
                                 <div style="width: 60px; height: 40px; background: #f7fafc; border: 2px dashed #cbd5e0; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #a0aec0; font-size: 0.8rem;">
                                     📄 Aucune image
                                 </div>
                                 @endif
                             </td>
+
 
                             <!-- Identité -->
                             <td style="padding: 15px;">
