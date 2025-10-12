@@ -79,6 +79,16 @@
 
 <!-- FORMULAIRE -->
 <form id="multiStepForm" action="{{ route('compte.store') }}" method="POST" enctype="multipart/form-data">
+    @if ($errors->any())
+    <div class="bg-red-50 border border-red-300 text-red-700 p-3 rounded-lg mb-4">
+        <ul class="list-disc pl-5 space-y-1">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     @csrf
 
     <!-- ÉTAPE 1 -->
@@ -113,9 +123,24 @@
                 <input type="text" name="cni" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
             </div>
             <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700">Photo CNI</label>
-                <input type="file" name="photo_cni" class="w-full px-4 py-2 border border-gray-300 rounded-lg" accept="image/*" required>
+                <label class="block text-sm font-medium text-gray-700">
+                    Photo CNI (1 ou 2 photos maximum)
+                </label>
+                <input
+                    type="file"
+                    name="photo_cni[]"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    accept="image/*"
+                    multiple
+                    required>
+                @error('photo_cni')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+                @error('photo_cni.*')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
+
             <div class="space-y-2">
                 <label class="block text-sm font-medium text-gray-700">Sexe</label>
                 <select name="sexe" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>

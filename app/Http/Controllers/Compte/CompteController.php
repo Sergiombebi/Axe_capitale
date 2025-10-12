@@ -31,11 +31,11 @@ class CompteController extends Controller
                 'string',
                 'max:100',
                 Rule::unique('comptes')->where(function ($query) use ($request) {
-                    return $query
-                        ->where('user_id', '!=', Auth::id()); // ignore les CNI du même utilisateur
+                    return $query->where('user_id', '!=', Auth::id());
                 }),
             ],
-            'photo_cni' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'photo_cni' => 'required|array|max:2', // <= tableau max 2 fichiers
+            'photo_cni.*' => 'image|mimes:jpg,jpeg,png|max:2048',
             'sexe' => 'required|in:Homme,Femme',
             'telephone' => 'required|string|max:20',
             'pays' => 'required|string|max:100',
@@ -48,10 +48,13 @@ class CompteController extends Controller
             'fait_a' => 'required|string|max:255',
         ]);
 
-        // Enregistrer l'image CNI
-        $cheminImage = $request->file('photo_cni')->store('cni', 'public');
+        // 📸 Enregistrer plusieurs images
+        $cheminsImages = [];
+        foreach ($request->file('photo_cni') as $image) {
+            $cheminsImages[] = $image->store('cni', 'public');
+        }
 
-        // Créer le compte
+        // Sauvegarder le ou les chemins (ex: JSON)
         $compte = Compte::create([
             'user_id' => Auth::id(),
             'nom' => $request->nom,
@@ -59,7 +62,7 @@ class CompteController extends Controller
             'date_naissance' => $request->date_naissance,
             'lieu_naissance' => $request->lieu_naissance,
             'cni' => $request->cni,
-            'photo_cni' => $cheminImage,
+            'photo_cni' => json_encode($cheminsImages), // 🔹 sauvegarde JSON
             'sexe' => $request->sexe,
             'telephone' => $request->telephone,
             'pays' => $request->pays,
@@ -70,7 +73,7 @@ class CompteController extends Controller
             'tel_urgence' => $request->tel_urgence,
             'fait_le' => $request->fait_le,
             'fait_a' => $request->fait_a,
-            'status' => 'inactif', // Par défaut
+            'status' => 'inactif',
         ]);
 
         return redirect()->back()->with('compte_cree', true);
@@ -114,7 +117,7 @@ class CompteController extends Controller
     public function dashboardCompte(Request $request)
     {
         // Vérifier que l'utilisateur est gestionnaire de compte
-       if (auth()->user()->role !== 'gestionnaire_compte') {
+        if (auth()->user()->role !== 'gestionnaire_compte') {
             abort(403, 'Accès non autorisé');
         }
 
@@ -401,7 +404,7 @@ class CompteController extends Controller
             'type_compte'     => 'bloque',
             'solde'           => 0.00,
             'numero_compte'   => $compteEpargne->numero_compte,
-            'code_secret'     =>$compteEpargne->code_secret,
+            'code_secret'     => $compteEpargne->code_secret,
             'nom'             => $compteEpargne->nom,
             'prenom'          => $compteEpargne->prenom,
             'date_naissance'  => $compteEpargne->date_naissance,
@@ -460,7 +463,7 @@ class CompteController extends Controller
             'type_compte'     => 'terme',
             'solde'           => 0.00,
             'numero_compte'   => $compteEpargne->numero_compte,
-            'code_secret'     =>$compteEpargne->code_secret,
+            'code_secret'     => $compteEpargne->code_secret,
             'nom'             => $compteEpargne->nom,
             'prenom'          => $compteEpargne->prenom,
             'date_naissance'  => $compteEpargne->date_naissance,
