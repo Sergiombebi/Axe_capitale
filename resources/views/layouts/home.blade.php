@@ -154,7 +154,7 @@
                         </a>
                         @endif
                         @endauth
-                        
+
                         @auth
                         @if(Auth::user()->role === 'gest-import')
                         <a href="{{route('dashboard.import')}}"
@@ -179,14 +179,14 @@
                         </a>
                         @endif
                         @endauth
-                        
+
 
 
                         <a href="{{route('create.account')}}" class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200">
                             <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                            Creation de compte 
+                            Creation de compte
                             <span class="ml-auto bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">3</span>
                         </a>
 
@@ -277,12 +277,7 @@
                 <div class="flex items-center space-x-3">
                     {{-- Notifications --}}
                     @auth
-                    <button class="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM9 17H4l5 5v-5zM21 7v5a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2z" />
-                        </svg>
-                        <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
-                    </button>
+                    
 
                     {{-- Menu utilisateur --}}
                     <div class="relative">
@@ -297,9 +292,9 @@
                     </div>
 
                     {{-- Bouton de déconnexion --}}
-                    <form method="POST" action="{{route('logout')}}" class="hidden md:block">
+                    <form method="POST" action="{{route('logout')}}" class="block">
                         @csrf
-                        <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm font-medium">
+                        <button class="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm font-medium w-full md:w-auto">
                             Déconnexion
                         </button>
                     </form>
