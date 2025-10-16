@@ -35,7 +35,7 @@ class CompteController extends Controller
                 }),
             ],
             'photo_cni' => 'required|array|max:2', // <= tableau max 2 fichiers
-            'photo_cni.*' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'photo_cni.*' => 'image|mimes:jpg,jpeg,png|max:10240',
             'sexe' => 'required|in:Homme,Femme',
             'telephone' => 'required|string|max:20',
             'pays' => 'required|string|max:100',
