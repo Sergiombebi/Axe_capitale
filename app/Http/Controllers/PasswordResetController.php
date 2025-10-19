@@ -94,113 +94,111 @@ class PasswordResetController extends Controller
     /**
      * Afficher le formulaire de réinitialisation du mot de passe
      */
-    public function showResetForm(Request $request)
-    {
-        $token = $request->query('token');
-        $email = $request->query('email');
+   public function showResetForm(Request $request)
+{
+    $token = $request->query('token');
+    $email = $request->query('email');
 
-        if (!$token || !$email) {
-            return redirect()->route('login')
-                ->with('error', 'Lien de réinitialisation invalide.');
-        }
-
-        // Vérifier que le token existe et n'a pas expiré (60 minutes)
-        $passwordReset = DB::table('password_reset_tokens')
-            ->where('email', $email)
-            ->first();
-
-        if (!$passwordReset) {
-            return redirect()->route('login')
-                ->with('error', 'Ce lien de réinitialisation a expiré ou est invalide.');
-        }
-
-        // Vérifier l'expiration (60 minutes)
-        if ($passwordReset->created_at && now()->diffInMinutes($passwordReset->created_at) > 60) {
-            DB::table('password_reset_tokens')->where('email', $email)->delete();
-            return redirect()->route('login')
-                ->with('error', 'Ce lien de réinitialisation a expiré. Veuillez en demander un nouveau.');
-        }
-
-        return view('register.password-reset-reset', [
-            'token' => $token,
-            'email' => $email,
-        ]);
+    if (!$token || !$email) {
+        return redirect()->route('login')
+            ->with('error', 'Lien de réinitialisation invalide.');
     }
+
+    // Vérifier que le token existe et n'a pas expiré (60 minutes)
+    $passwordReset = DB::table('password_reset_tokens')
+        ->where('email', $email)
+        ->where('token', $token) // correspondance directe
+        ->first();
+
+    if (!$passwordReset) {
+        return redirect()->route('login')
+            ->with('error', 'Ce lien de réinitialisation est invalide ou a expiré.');
+    }
+
+    // Vérifier l'expiration (60 minutes)
+    if (now()->diffInMinutes($passwordReset->created_at) > 60) {
+        DB::table('password_reset_tokens')->where('email', $email)->delete();
+        return redirect()->route('login')
+            ->with('error', 'Ce lien de réinitialisation a expiré. Veuillez en demander un nouveau.');
+    }
+
+    return view('register.password-reset-reset', [
+        'token' => $token,
+        'email' => $email,
+    ]);
+}
+
 
     /**
      * Traiter la réinitialisation du mot de passe
      */
     public function resetPassword(Request $request)
-    {
-        try {
-            // Validation des données
-            $request->validate([
-                'token' => ['required', 'string'],
-                'email' => ['required', 'string', 'email'],
-                'password' => ['required', 'string', 'confirmed', Password::defaults()],
-            ], [
-                'password.required' => 'Le mot de passe est requis.',
-                'password.confirmed' => 'Les mots de passe ne correspondent pas.',
-                'email.required' => 'L\'adresse email est requise.',
-            ]);
+{
+    try {
+        // Validation des données
+        $request->validate([
+            'token' => ['required', 'string'],
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string', 'confirmed', Password::defaults()],
+        ], [
+            'password.required' => 'Le mot de passe est requis.',
+            'password.confirmed' => 'Les mots de passe ne correspondent pas.',
+            'email.required' => 'L\'adresse email est requise.',
+        ]);
 
-            $token = $request->input('token');
-            $email = $request->input('email');
-            $password = $request->input('password');
+        $token = $request->input('token');
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-            // Vérifier que l'utilisateur existe
-            $user = User::where('email', $email)->first();
-
-            if (!$user) {
-                return back()->with('error', 'Aucun compte trouvé avec cette adresse email.')
-                    ->withInput($request->except('password', 'password_confirmation'));
-            }
-
-            // Vérifier que le token existe
-            $passwordReset = DB::table('password_reset_tokens')
-                ->where('email', $email)
-                ->first();
-
-            if (!$passwordReset) {
-                return back()->with('error', 'Ce lien de réinitialisation a expiré ou est invalide.')
-                    ->withInput($request->except('password', 'password_confirmation'));
-            }
-
-            // Vérifier l'expiration (60 minutes)
-            if (now()->diffInMinutes($passwordReset->created_at) > 60) {
-                DB::table('password_reset_tokens')->where('email', $email)->delete();
-                return back()->with('error', 'Ce lien de réinitialisation a expiré. Veuillez en demander un nouveau.')
-                    ->withInput($request->except('password', 'password_confirmation'));
-            }
-
-            // Vérifier que le token correspond (décodage du hash)
-            if (!Hash::check($token, $passwordReset->token)) {
-                return back()->with('error', 'Le lien de réinitialisation est invalide.')
-                    ->withInput($request->except('password', 'password_confirmation'));
-            }
-
-            // Mettre à jour le mot de passe
-            $user->update([
-                'password' => Hash::make($password),
-            ]);
-
-            // Supprimer le token utilisé
-            DB::table('password_reset_tokens')->where('email', $email)->delete();
-
-            return redirect()->route('login')
-                ->with('success', 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.');
-        } catch (ValidationException $e) {
-            return back()->withErrors($e->errors())->withInput($request->except('password', 'password_confirmation'));
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Erreur lors de la réinitialisation du mot de passe', [
-                'error' => $e->getMessage(),
-                'exception' => get_class($e),
-                'trace' => $e->getTraceAsString(),
-                'email' => $request->input('email')
-            ]);
-
-            return back()->with('error', 'Une erreur est survenue. Veuillez réessayer.')
+        // Vérifier que l'utilisateur existe
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            return back()->with('error', 'Aucun compte trouvé avec cette adresse email.')
                 ->withInput($request->except('password', 'password_confirmation'));
         }
+
+        // Vérifier que le token existe et correspond
+        $passwordReset = DB::table('password_reset_tokens')
+            ->where('email', $email)
+            ->where('token', $token)
+            ->first();
+
+        if (!$passwordReset) {
+            return back()->with('error', 'Le lien de réinitialisation est invalide ou a expiré.')
+                ->withInput($request->except('password', 'password_confirmation'));
+        }
+
+        // Vérifier l'expiration (60 minutes)
+        if (now()->diffInMinutes($passwordReset->created_at) > 60) {
+            DB::table('password_reset_tokens')->where('email', $email)->delete();
+            return back()->with('error', 'Ce lien de réinitialisation a expiré. Veuillez en demander un nouveau.')
+                ->withInput($request->except('password', 'password_confirmation'));
+        }
+
+        // Mettre à jour le mot de passe
+        $user->update([
+            'password' => Hash::make($password),
+        ]);
+
+        // Supprimer le token utilisé
+        DB::table('password_reset_tokens')->where('email', $email)->delete();
+
+        return redirect()->route('login')
+            ->with('success', 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.');
+
+    } catch (ValidationException $e) {
+        return back()->withErrors($e->errors())->withInput($request->except('password', 'password_confirmation'));
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error('Erreur lors de la réinitialisation du mot de passe', [
+            'error' => $e->getMessage(),
+            'exception' => get_class($e),
+            'trace' => $e->getTraceAsString(),
+            'email' => $request->input('email')
+        ]);
+
+        return back()->with('error', 'Une erreur est survenue. Veuillez réessayer.')
+            ->withInput($request->except('password', 'password_confirmation'));
     }
+}
+
 }
