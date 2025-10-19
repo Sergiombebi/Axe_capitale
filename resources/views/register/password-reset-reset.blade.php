@@ -102,7 +102,7 @@
 
         {{-- Lien de retour à la connexion --}}
         <div class="text-center">
-            <a href="{{ route('login.form') }}" class="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors">
+            <a href="{{ route('login') }}" class="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors">
                 Retour à la connexion
             </a>
         </div>
