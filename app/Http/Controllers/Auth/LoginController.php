@@ -8,6 +8,11 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use League\Config\Exception\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Password;
+
 
 class LoginController extends Controller
 {
@@ -87,4 +92,6 @@ class LoginController extends Controller
         return redirect()->route('welcome')
             ->with('success', 'Déconnexion effectuée avec succès.');
     }
+
+    
 }

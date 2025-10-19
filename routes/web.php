@@ -11,6 +11,7 @@ use App\Http\Controllers\Credit\CreditController;
 use App\Http\Controllers\FinancementProjet\FinancementProjetController;
 use App\Http\Controllers\Import\ImportController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\PasswordResetController;
 // ✅ Ajouter un nom à la route
 Route::get('/', function () {
     return view('welcome');
@@ -35,6 +36,12 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
+//mot de passe oublier
+Route::get('/password-reset/request', [PasswordResetController::class, 'showRequestForm'])->name('password.request');
+Route::post('/password-reset/send-link', [PasswordResetController::class, 'sendResetLink'])->name('password.send-link');
+Route::get('/password-reset', [PasswordResetController::class, 'showResetForm'])->name('password.reset.show');
+Route::post('/password-reset', [PasswordResetController::class, 'resetPassword'])->name('password.reset');
+
 
 
 
@@ -151,4 +158,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/users/assign-role', [DashboardController::class, 'assignRole'])->name('users.assign-role');
     Route::delete('/users/{id}', [DashboardController::class, 'deleteUser'])->name('users.delete');
     Route::get('/export/global-report', [DashboardController::class, 'exportGlobalReport'])->name('export.global');
+    // Routes de réinitialisation de mot de passe (PUBLIC - pas d'authentification requise)
+
+
+    // Afficher le formulaire de demande de réinitialisation
+
+
+
+
+
+
 });
