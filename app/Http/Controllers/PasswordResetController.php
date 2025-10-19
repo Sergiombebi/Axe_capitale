@@ -110,14 +110,14 @@ class PasswordResetController extends Controller
             ->first();
 
         if (!$passwordReset) {
-            return redirect()->route('login.form')
+            return redirect()->route('login')
                 ->with('error', 'Ce lien de réinitialisation a expiré ou est invalide.');
         }
 
         // Vérifier l'expiration (60 minutes)
         if ($passwordReset->created_at && now()->diffInMinutes($passwordReset->created_at) > 60) {
             DB::table('password_reset_tokens')->where('email', $email)->delete();
-            return redirect()->route('login.form')
+            return redirect()->route('login')
                 ->with('error', 'Ce lien de réinitialisation a expiré. Veuillez en demander un nouveau.');
         }
 
@@ -187,7 +187,7 @@ class PasswordResetController extends Controller
             // Supprimer le token utilisé
             DB::table('password_reset_tokens')->where('email', $email)->delete();
 
-            return redirect()->route('login.form')
+            return redirect()->route('login')
                 ->with('success', 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors())->withInput($request->except('password', 'password_confirmation'));
