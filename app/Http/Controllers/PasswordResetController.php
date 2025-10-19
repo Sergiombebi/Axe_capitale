@@ -100,7 +100,7 @@ class PasswordResetController extends Controller
         $email = $request->query('email');
 
         if (!$token || !$email) {
-            return redirect()->route('login.form')
+            return redirect()->route('login')
                 ->with('error', 'Lien de réinitialisation invalide.');
         }
 
