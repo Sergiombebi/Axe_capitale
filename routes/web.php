@@ -12,6 +12,7 @@ use App\Http\Controllers\FinancementProjet\FinancementProjetController;
 use App\Http\Controllers\Import\ImportController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\Admin\UserRoleController;
 // ✅ Ajouter un nom à la route
 Route::get('/', function () {
     return view('welcome');
@@ -161,11 +162,8 @@ Route::middleware(['auth'])->group(function () {
     // Routes de réinitialisation de mot de passe (PUBLIC - pas d'authentification requise)
 
 
-    // Afficher le formulaire de demande de réinitialisation
-
-
-
-
-
-
+    // attribution des roles
+    Route::match(['get', 'post'], '/admin/users', [UserRoleController::class, 'index'])->name('admin.users');
+    Route::post('/admin/users/{id}/update-role', [UserRoleController::class, 'updateRole'])->name('admin.users.updateRole');
+    Route::get('/admin/logout-access', [UserRoleController::class, 'logoutAccess'])->name('admin.logoutAccess');
 });
