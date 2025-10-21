@@ -1,6 +1,6 @@
 @extends('layouts.home')
 @section('content')
 
-@include('TableauDeBord.gestionCompte')
+@include('tableauDeBord.gestionCompte')
 
 @endsection
