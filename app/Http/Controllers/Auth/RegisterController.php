@@ -48,18 +48,18 @@ class RegisterController extends Controller
                 'phone' => $validatedData['phone'], // ✅ correction ici
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
-                'verification_code' => $verification_code,
-                'email_verified_at' => null,
+                // 'verification_code' => $verification_code,
+                 'email_verified_at' => now(),
                 'role' => 'user',
             ]);
 
             // 🔔 Envoi mail + événement Laravel
-            event(new Registered($user));
-                 Mail::to($user->email)->send(new VerificationCodeMail($user));
+            // event(new Registered($user));
+            //      Mail::to($user->email)->send(new VerificationCodeMail($user));
             // 🔓 Connexion automatique
             Auth::login($user);
 
-            return redirect()->route('verify.show')->with([
+            return redirect()->route('welcome')->with([
                 'success' => 'Votre compte a été créé. Veuillez vérifier votre email !',
                 'email' => $user->email
             ]);

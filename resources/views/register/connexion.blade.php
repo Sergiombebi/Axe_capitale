@@ -112,9 +112,9 @@
 
         {{-- Lien d'inscription --}}
         <div class="text-center">
-            <span class="text-sm text-gray-600">Vous n'avez pas encore de compte ?</span>
+            <span class="text-sm text-gray-600">pas encore inscrit ?</span>
             <a href="{{ route('register.form') }}" class="text-sm text-blue-600 hover:text-blue-800 hover:underline font-medium ml-1 transition-colors">
-                Créer un compte
+                inscription dans le site
             </a>
         </div>
 
